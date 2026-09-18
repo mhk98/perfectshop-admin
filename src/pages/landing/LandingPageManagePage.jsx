@@ -3,7 +3,7 @@ import { Trash2, ChevronDown, Search, Eye, Edit2, ExternalLink, ChevronLeft, Che
 import { landingPageService } from '../../services/landingPageService';
 
 const PAGE_SIZES = [10, 20, 30, 50];
-const FRONTEND_SITE_URL = (import.meta.env.VITE_SITE_URL || 'http://localhost:3000').replace(/\/+$/, '');
+const FRONTEND_SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://perfectshop.world').replace(/\/+$/, '');
 
 function getFrontendLandingUrl(id) {
   return `${FRONTEND_SITE_URL}/landing-page/${encodeURIComponent(String(id))}`;

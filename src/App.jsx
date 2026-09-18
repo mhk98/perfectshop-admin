@@ -820,7 +820,7 @@ function App() {
       id: 2,
       title: "এ আঘা খাবার ৪টি কারণ",
       imageName: "",
-      imageText: "Holy Deen",
+      imageText: "Perfect Shop",
       imageColor: "linear-gradient(135deg, #0f172a, #4b6b8a)",
       description: "",
       status: false,
@@ -829,7 +829,7 @@ function App() {
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [bannerCategories, setBannerCategories] = useState([
     { id: 1, name: "Nazmul Hasan", status: true },
-    { id: 2, name: "Welcome to Holy Deen", status: true },
+    { id: 2, name: "Welcome to Perfect Shop", status: true },
   ]);
   const [selectedBannerCategory, setSelectedBannerCategory] = useState(null);
   const [banners, setBanners] = useState([]);

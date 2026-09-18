@@ -34,9 +34,9 @@ export default function SalesChart({ salesChart = [], loading }) {
             <Line
               type="monotone"
               dataKey="sales"
-              stroke="#C79524"
+              stroke="#F2A900"
               strokeWidth={2}
-              dot={{ r: 2, fill: '#C79524' }}
+              dot={{ r: 2, fill: '#F2A900' }}
               activeDot={{ r: 5 }}
             />
           </LineChart>

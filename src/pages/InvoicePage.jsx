@@ -149,7 +149,7 @@ export default function InvoicePage({
     meta.customerAddress ||
     [order.customerArea, order.customerDistrict].filter(Boolean).join(", ");
   const sellerName =
-    getSiteName(settings) || settings.companyName || "Holy Deen";
+    getSiteName(settings) || settings.companyName || "Perfect Shop";
   const sellerPhone = settings.phone || settings.phoneNumber || "01518301098";
   const sellerEmail = settings.email || "support@holydeen.com";
   const sellerAddress =

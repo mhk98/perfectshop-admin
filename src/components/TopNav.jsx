@@ -332,34 +332,34 @@ export default function TopNav({
 
         <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
           <NavBtn
-            color="bg-[#C79524]"
+            color="bg-[#F2A900]"
             label="Visit Site"
             onClick={() =>
               window.open(SITE_URL, "_blank", "noopener,noreferrer")
             }
           />
           <NavBtn
-            color="bg-[#071B52]"
+            color="bg-[#0A0A0A]"
             label="Landing Page"
             onClick={() => onQuickNavigate?.("landing")}
           />
           <NavBtn
-            color="bg-[#AA7416]"
+            color="bg-[#D18A00]"
             label="Visitors"
             onClick={() => onQuickNavigate?.("visitors")}
           />
           <NavBtn
-            color="bg-[#173D7D]"
+            color="bg-[#262626]"
             label="POS"
             onClick={() => onQuickNavigate?.("pos")}
           />
           <NavBtn
-            color="bg-[#C79524]"
+            color="bg-[#F2A900]"
             label="Expense"
             onClick={() => onQuickNavigate?.("expense")}
           />
           <NavBtn
-            color="bg-[#173D7D]"
+            color="bg-[#262626]"
             label="Full Tutorial"
             onClick={() =>
               TUTORIAL_URL
@@ -523,7 +523,7 @@ export default function TopNav({
             onClick={() => setDropdownOpen((v) => !v)}
             className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-gray-100 transition"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#071B52] via-[#C79524] to-[#DDA72F] flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0A0A0A] via-[#D18A00] to-[#FFC107] flex items-center justify-center shrink-0">
               {user?.image ? (
                 <img
                   src={assetUrl(user.image)}

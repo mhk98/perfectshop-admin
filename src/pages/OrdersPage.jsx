@@ -1739,7 +1739,7 @@ function OrderInvoicePage({ order, settings }) {
     order.paymentMethod || meta.paymentMethod,
   );
   const sellerName =
-    getSiteName(settings) || settings.companyName || "Holy Deen";
+    getSiteName(settings) || settings.companyName || "Perfect Shop";
   const sellerPhone = settings.phone || settings.phoneNumber || "01518301098";
   const sellerEmail = settings.email || "support@holydeen.com";
   const sellerAddress =
