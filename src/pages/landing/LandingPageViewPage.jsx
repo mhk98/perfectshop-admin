@@ -17,6 +17,7 @@ import { landingPageService } from "../../services/landingPageService";
 import { orderService } from "../../services/orderService";
 import {
   getTrackingClickData,
+  setTrackingSuspended,
   trackMarketingEvent,
 } from "../../services/trackingService";
 import {
@@ -141,7 +142,13 @@ function getVideoEmbedUrl(value) {
   return raw;
 }
 
-export default function LandingPageViewPage({ campaign }) {
+export default function LandingPageViewPage({ campaign, trackingEnabled = true }) {
+  // Declared first so it runs before the PageView/ViewContent effect below.
+  useEffect(() => {
+    setTrackingSuspended(!trackingEnabled);
+    return () => setTrackingSuspended(false);
+  }, [trackingEnabled]);
+
   const [form, setForm] = useState({
     name: "",
     phone: "",

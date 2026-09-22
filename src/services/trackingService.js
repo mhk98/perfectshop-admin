@@ -1,6 +1,12 @@
 import { apiRequest } from "../utils/apiClient";
 
 let initializationPromise = null;
+// Dashboard previews must not send real events to the live pixels / Conversions API.
+let trackingSuspended = false;
+
+export function setTrackingSuspended(value) {
+  trackingSuspended = Boolean(value);
+}
 let trackingConfig = { metaPixels: [], tiktokPixels: [], googleAds: [] };
 
 const META_EVENT_NAMES = {
@@ -256,6 +262,7 @@ export async function trackMarketingEvent(
   eventName,
   { userData = {}, customData = {} } = {},
 ) {
+  if (trackingSuspended) return null;
   try {
     await initializeTracking();
     const eventId = createEventId(eventName);
