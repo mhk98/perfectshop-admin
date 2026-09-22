@@ -8,7 +8,7 @@ export default function StatCards({ summary = {}, loading }) {
       label: 'Sales Amount',
       value: loading ? '—' : `৳ ${fmt(summary.totalSales)}`,
       icon: Clock,
-      gradient: 'linear-gradient(135deg, #0A0A0A, #262626)',
+      gradient: 'linear-gradient(135deg, #0A0A0A, #333333)',
     },
     {
       label: 'Total Order',
@@ -20,7 +20,7 @@ export default function StatCards({ summary = {}, loading }) {
       label: 'Total Visitors',
       value: loading ? '—' : fmt(summary.totalVisitors),
       icon: Users,
-      gradient: 'linear-gradient(135deg, #171717, #4D4D4D)',
+      gradient: 'linear-gradient(135deg, #262626, #4D4D4D)',
     },
     {
       label: 'Total Customers',
