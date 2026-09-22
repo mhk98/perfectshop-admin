@@ -349,7 +349,7 @@ export default function TopNav({
             onClick={() => onQuickNavigate?.("visitors")}
           />
           <NavBtn
-            color="bg-[#262626]"
+            color="bg-[#333333]"
             label="POS"
             onClick={() => onQuickNavigate?.("pos")}
           />
@@ -359,7 +359,7 @@ export default function TopNav({
             onClick={() => onQuickNavigate?.("expense")}
           />
           <NavBtn
-            color="bg-[#262626]"
+            color="bg-[#333333]"
             label="Full Tutorial"
             onClick={() =>
               TUTORIAL_URL
@@ -523,7 +523,7 @@ export default function TopNav({
             onClick={() => setDropdownOpen((v) => !v)}
             className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-gray-100 transition"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0A0A0A] via-[#D18A00] to-[#FFC107] flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0A0A0A] via-[#F2A900] to-[#FFC107] flex items-center justify-center shrink-0">
               {user?.image ? (
                 <img
                   src={assetUrl(user.image)}

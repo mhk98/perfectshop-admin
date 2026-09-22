@@ -106,7 +106,7 @@ export default function Dashboard() {
 
       {/* Footer */}
       <div className="text-center text-xs text-gray-400 py-2">
-        © Perfect Shop{" "}
+        © Holy Deen{" "}
         <span className="text-blue-500 cursor-pointer hover:underline">
           DigitalEver
         </span>
