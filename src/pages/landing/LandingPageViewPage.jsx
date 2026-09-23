@@ -168,6 +168,8 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const incompleteOrderIdRef = useRef(null);
   const incompletePhoneRef = useRef("");
   const leadTrackedOrderIdRef = useRef(null);
+  const viewedCampaignRef = useRef(null);
+  const checkoutCampaignRef = useRef(null);
 
   const productName = getProductName(campaign);
   const title =
@@ -220,6 +222,8 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   }, []);
 
   useEffect(() => {
+    if (!trackingEnabled || !campaign?.Id || viewedCampaignRef.current === campaign.Id) return;
+    viewedCampaignRef.current = campaign.Id;
     const contentId = String(campaign?.productId || campaign?.Id || "");
     const commonData = {
       content_ids: contentId ? [contentId] : [],
@@ -232,7 +236,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     };
     void trackMarketingEvent("PageView");
     void trackMarketingEvent("ViewContent", { customData: commonData });
-  }, [campaign?.Id, campaign?.productId, price, title]);
+  }, [campaign?.Id, campaign?.productId, price, title, trackingEnabled]);
 
   useEffect(() => {
     let active = true;
@@ -284,11 +288,32 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     [campaign?.Id, landingPages],
   );
 
+  function startCheckout() {
+    if (!trackingEnabled || checkoutCampaignRef.current === campaign?.Id) return;
+    checkoutCampaignRef.current = campaign?.Id;
+    void trackMarketingEvent("InitiateCheckout", { enabled: trackingEnabled, customData: {
+      content_ids: getSelectedOrderItems().map((item) => String(item.productId || item.id)),
+      content_type: "product", value: total, currency: "BDT",
+    } });
+  }
+
+  function trackAddedProduct(item, quantity = 1) {
+    if (!trackingEnabled) return;
+    void trackMarketingEvent("AddToCart", { enabled: trackingEnabled, customData: {
+      content_ids: [String(item.productId || item.id)], content_type: "product",
+      contents: [{ id: String(item.productId || item.id), quantity, item_price: item.price }],
+      value: item.price * quantity, currency: "BDT",
+    } });
+  }
+
   function set(field, value) {
+    startCheckout();
     setForm((previous) => ({ ...previous, [field]: value }));
   }
 
   function toggleProductOption(option) {
+    startCheckout();
+    if (!selectedProducts.some((item) => item.id === option.id)) trackAddedProduct(option);
     setSelectedProducts((current) => {
       const exists = current.some((item) => item.id === option.id);
       if (exists) {
@@ -300,6 +325,9 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   }
 
   function changeProductQty(optionId, delta) {
+    startCheckout();
+    const item = selectedProducts.find((entry) => entry.id === optionId);
+    if (item && delta > 0) trackAddedProduct(item, delta);
     setSelectedProducts((current) =>
       current.map((item) =>
         item.id === optionId ? { ...item, qty: Math.max(1, item.qty + delta) } : item,
@@ -422,6 +450,8 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   ]);
 
   async function handlePlaceOrder() {
+    if (placingOrder || placedOrder) return;
+    startCheckout();
     setOrderError("");
     const normalizedPhone = normalizeBangladeshPhone(form.phone);
     if (!form.name.trim() || !form.phone.trim() || !form.address.trim()) {
@@ -459,16 +489,14 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       num_items: selectedItems.reduce((sum, item) => sum + item.qty, 0),
     };
     const trackingUser = { name: form.name.trim(), phone: normalizedPhone };
-    void trackMarketingEvent("InitiateCheckout", {
-      userData: trackingUser,
-      customData: trackingData,
-    });
+
     try {
       void trackMarketingEvent("AddPaymentInfo", {
         userData: trackingUser,
         customData: trackingData,
       });
       const payload = buildLandingOrderPayload({ phoneNumber: normalizedPhone });
+      payload.landingTracking = { enabled: trackingEnabled, eventSourceUrl: window.location.href, customData: trackingData };
       const response = await orderService.createOrder(payload);
       const placedOrderData = response.data || payload;
       setPlacedOrder(placedOrderData);
@@ -476,6 +504,9 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       incompletePhoneRef.current = "";
       leadTrackedOrderIdRef.current = null;
       void trackMarketingEvent("Purchase", {
+        enabled: trackingEnabled,
+        eventId: placedOrderData.purchaseEventId,
+        server: !placedOrderData.purchaseEventId,
         userData: {
           ...trackingUser,
           customerId: placedOrderData.customerId || placedOrderData.customer?.Id,
