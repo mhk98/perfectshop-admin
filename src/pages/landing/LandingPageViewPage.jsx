@@ -179,7 +179,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const regularPage = isRegularLandingPage(campaign);
   const price = toNumber(campaign?.price, regularPage ? 4100 : 699);
   const originalPrice = toNumber(campaign?.originalPrice, regularPage ? 5600 : 1500);
-  const phone = campaign?.phone || "+8808647-222899";
+  const phone = "01355945078";
   const shortDescription = stripHtml(campaign?.shortDescription || "");
   const descriptionTitle =
     campaign?.descriptionTitle || "এই ক্যাম্পেইনের বিশেষ অফার";
@@ -1183,6 +1183,7 @@ function RegularLandingTemplate({ data, campaign }) {
     title,
     subTitle,
     price,
+    // eslint-disable-next-line no-unused-vars -- used by the hidden price offer section
     originalPrice,
     phone,
     shortDescription,
@@ -1222,6 +1223,7 @@ function RegularLandingTemplate({ data, campaign }) {
   const reviewRegularPriceLabel = regularData.reviewRegularPriceLabel || "";
   const reviewOfferPriceLabel = regularData.reviewOfferPriceLabel || "";
   const reviewButtonText = regularData.reviewButtonText || "";
+  // eslint-disable-next-line no-unused-vars -- used by the hidden price offer section
   const hasReviewSectionContent = Boolean(
     reviewHeading ||
     reviewSubHeading ||
@@ -1288,6 +1290,7 @@ function RegularLandingTemplate({ data, campaign }) {
         </section>
       )}
 
+      {/* Price offer section hidden for now
       {hasReviewSectionContent && (
         <section className="px-4 py-14 text-center" style={{ backgroundColor: colors.sectionBgColor }}>
           {reviewHeading && (
@@ -1317,6 +1320,7 @@ function RegularLandingTemplate({ data, campaign }) {
           )}
         </section>
       )}
+      */}
 
       <section className="px-4 py-16 text-center">
         <div className="mx-auto max-w-5xl">

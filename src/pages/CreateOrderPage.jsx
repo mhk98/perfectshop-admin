@@ -24,7 +24,7 @@ import { imageUrl } from "../utils/assetUrl";
 // ── Delivery areas ─────────────────────────────────────────
 const deliveryAreas = [
   { label: "ঢাকার ভিতরে ৮০ টাকা", fee: 80 },
-  { label: "ঢাকার বাইরে ১২০ টাকা", fee: 120 },
+  { label: "ঢাকার বাইরে ১৩০ টাকা", fee: 130 },
   { label: "চট্টগ্রাম ১৫০ টাকা", fee: 150 },
   { label: "সিলেট ১৫০ টাকা", fee: 150 },
   { label: "রাজশাহী ১৩০ টাকা", fee: 130 },

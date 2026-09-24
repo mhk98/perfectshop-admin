@@ -27,7 +27,7 @@ import { imageUrl } from "../utils/assetUrl";
 
 const deliveryAreas = [
   { label: "ঢাকার ভিতরে ৮০ টাকা", fee: 80 },
-  { label: "ঢাকার বাইরে ১২০ টাকা", fee: 120 },
+  { label: "ঢাকার বাইরে ১৩০ টাকা", fee: 130, legacyLabels: ["ঢাকার বাইরে ১২০ টাকা"] },
   { label: "চট্টগ্রাম ১৫০ টাকা", fee: 150 },
   { label: "সিলেট ১৫০ টাকা", fee: 150 },
   { label: "রাজশাহী ১৩০ টাকা", fee: 130 },
@@ -136,8 +136,11 @@ export default function EditOrderPage({
   const [customerName, setCustomerName] = useState(order.customerName || "");
   // Older manual orders saved the delivery-area label (e.g. "ঢাকার বাইরে ১২০ টাকা")
   // as customerArea — treat that as the area selection, not the address.
+  const savedAreaText = String(order.customerArea || "").trim();
   const savedAreaIdx = deliveryAreas.findIndex(
-    (area) => area.label === String(order.customerArea || "").trim(),
+    (area) =>
+      area.label === savedAreaText ||
+      (area.legacyLabels || []).includes(savedAreaText),
   );
   const [address, setAddress] = useState(
     [savedAreaIdx >= 0 ? "" : order.customerArea, order.customerDistrict]

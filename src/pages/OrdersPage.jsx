@@ -1740,10 +1740,10 @@ function OrderInvoicePage({ order, settings }) {
   );
   const sellerName =
     getSiteName(settings) || settings.companyName || "Perfect Shop";
-  const sellerPhone = settings.phone || settings.phoneNumber || "01518301098";
-  const sellerEmail = settings.email || "support@holydeen.com";
+  const sellerPhone = settings.phone || settings.phoneNumber || "01355945078";
+  const sellerEmail = settings.email || "perfectshopbd01@gmail.com";
   const sellerAddress =
-    settings.address || "500/3, Khilgaon Niribili Society, Dhaka";
+    settings.address || "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka";
   const logo = getLogo(settings) || "/homzify-logo.jpeg";
   const customerAddress =
     order.customerAddress ||
