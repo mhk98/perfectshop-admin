@@ -20,8 +20,8 @@ export default function DateFilterPanel({ onFilterChange, filteredData, loading 
   const statuses = filteredData?.ordersByStatus || [];
 
   const filterStats = [
-    { label: 'Total Visitors', value: fmt(summary.totalVisitors), gradient: 'linear-gradient(135deg, #262626, #4D4D4D)' },
-    { label: 'Total Customers', value: fmt(summary.totalCustomers), gradient: 'linear-gradient(135deg, #A66B00, #F2A900)' },
+    { label: 'Total Visitors', value: fmt(summary.totalVisitors), gradient: 'linear-gradient(135deg, #2B2B29, #5C5C57)' },
+    { label: 'Total Customers', value: fmt(summary.totalCustomers), gradient: 'linear-gradient(135deg, #B87A00, #FFC107)' },
   ];
 
   const orderStats = statuses.filter((o) => FILTER_STATUS.includes(o.status));

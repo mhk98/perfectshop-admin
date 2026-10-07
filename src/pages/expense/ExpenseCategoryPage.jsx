@@ -33,7 +33,7 @@ export default function ExpenseCategoryPage({ categories, onCreate, onEdit }) {
           <button type="button" className="inline-flex items-center gap-1.5 rounded-full bg-rose-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose-600">
             ▶ টিউটোরিয়াল দেখুন
           </button>
-          <button type="button" onClick={onCreate} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700">
+          <button type="button" onClick={onCreate} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-indigo-700">
             Create
           </button>
         </div>
@@ -84,7 +84,7 @@ export default function ExpenseCategoryPage({ categories, onCreate, onEdit }) {
                       <button type="button" title="Disable" className="flex h-7 w-8 items-center justify-center rounded bg-gray-600 text-white transition hover:bg-gray-700">
                         <ThumbsDown size={13} />
                       </button>
-                      <button type="button" title="Edit" onClick={() => onEdit(category)} className="flex h-7 w-8 items-center justify-center rounded bg-indigo-600 text-white transition hover:bg-indigo-700">
+                      <button type="button" title="Edit" onClick={() => onEdit(category)} className="flex h-7 w-8 items-center justify-center rounded bg-indigo-600 text-gray-900 transition hover:bg-indigo-700">
                         <Pencil size={13} />
                       </button>
                     </div>
@@ -98,11 +98,11 @@ export default function ExpenseCategoryPage({ categories, onCreate, onEdit }) {
         <div className="flex items-center justify-between py-4 text-sm font-semibold text-gray-500">
           <span>Showing {filtered.length === 0 ? 0 : 1} to {filtered.length} of {filtered.length} entries</span>
           <div className="flex items-center gap-5 text-slate-400">
-            <button type="button" className="transition hover:text-indigo-600">‹</button>
+            <button type="button" className="transition hover:text-indigo-800">‹</button>
             {filtered.length > 0 && (
-              <button type="button" className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white">1</button>
+              <button type="button" className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-gray-900">1</button>
             )}
-            <button type="button" className="transition hover:text-indigo-600">›</button>
+            <button type="button" className="transition hover:text-indigo-800">›</button>
           </div>
         </div>
       </div>
@@ -127,8 +127,8 @@ function SortableHeader({ label, sortKey, sort, onSort, className = '' }) {
       <div className="flex items-center justify-between gap-2">
         <span>{label}</span>
         <span className="flex flex-col">
-          <ChevronUp size={10} className={active && sort.dir === 'asc' ? 'text-indigo-500' : 'text-gray-300'} />
-          <ChevronDown size={10} className={active && sort.dir === 'desc' ? 'text-indigo-500' : 'text-gray-300'} />
+          <ChevronUp size={10} className={active && sort.dir === 'asc' ? 'text-indigo-800' : 'text-gray-300'} />
+          <ChevronDown size={10} className={active && sort.dir === 'desc' ? 'text-indigo-800' : 'text-gray-300'} />
         </span>
       </div>
     </th>

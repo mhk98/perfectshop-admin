@@ -67,7 +67,7 @@ export default function AdminUserPage({ onNavigate, onEditUser }) {
         <button
           type="button"
           onClick={() => onNavigate && onNavigate("admin_user_edit")}
-          className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition"
+          className="bg-indigo-500 hover:bg-indigo-600 text-gray-900 text-sm font-semibold px-5 py-2 rounded-lg transition"
         >
           Create
         </button>
@@ -102,7 +102,7 @@ export default function AdminUserPage({ onNavigate, onEditUser }) {
             />
             <button
               type="submit"
-              className="text-xs bg-indigo-500 text-white px-2 py-1 rounded hover:bg-indigo-600"
+              className="text-xs bg-indigo-500 text-gray-900 px-2 py-1 rounded hover:bg-indigo-600"
             >
               Go
             </button>
@@ -176,7 +176,7 @@ export default function AdminUserPage({ onNavigate, onEditUser }) {
                         {user.Phone || user.phone || "—"}
                       </td>
                       <td className="px-4 py-3">
-                        <span className="px-2.5 py-1 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">
+                        <span className="px-2.5 py-1 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-800">
                           {user.role || "user"}
                         </span>
                       </td>
@@ -186,7 +186,7 @@ export default function AdminUserPage({ onNavigate, onEditUser }) {
                           onClick={() => handleStatusToggle(user)}
                           className={`px-2.5 py-1 rounded text-[10px] font-semibold transition ${
                             isActive
-                              ? "bg-teal-100 text-teal-700 hover:bg-teal-200"
+                              ? "bg-teal-100 text-teal-800 hover:bg-teal-200"
                               : "bg-red-100 text-red-600 hover:bg-red-200"
                           }`}
                         >
@@ -245,7 +245,7 @@ export default function AdminUserPage({ onNavigate, onEditUser }) {
                 <button
                   key={pg}
                   onClick={() => setPage(pg)}
-                  className={`w-7 h-7 rounded text-xs font-bold flex items-center justify-center ${pg === page ? "bg-indigo-500 text-white" : "border border-gray-300 text-gray-600 hover:bg-gray-50"}`}
+                  className={`w-7 h-7 rounded text-xs font-bold flex items-center justify-center ${pg === page ? "bg-indigo-500 text-gray-900" : "border border-gray-300 text-gray-600 hover:bg-gray-50"}`}
                 >
                   {pg}
                 </button>

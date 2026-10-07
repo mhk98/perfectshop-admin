@@ -17,12 +17,12 @@ export function useOrders({ status, search, fromDate, toDate, assignedEmployeeId
   const [error, setError] = useState(null);
   const abortRef = useRef(null);
 
-  const fetchOrders = useCallback(async () => {
+  const fetchOrders = useCallback(async ({ silent = false } = {}) => {
     if (abortRef.current) abortRef.current.abort();
     const controller = new AbortController();
     abortRef.current = controller;
 
-    setLoading(true);
+    if (!silent) setLoading(true);
     setError(null);
     try {
       const res = await orderService.getOrders({
@@ -36,18 +36,29 @@ export function useOrders({ status, search, fromDate, toDate, assignedEmployeeId
         sortBy: "Id",
         sortOrder: "DESC",
       });
+      if (controller.signal.aborted) return;
       setOrders(res.data || []);
       setMeta(res.meta || { total: 0, page: 1, limit });
     } catch (err) {
-      if (err.name !== "AbortError") setError(err.message);
+      if (!controller.signal.aborted && err.name !== "AbortError" && !silent) setError(err.message);
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) setLoading(false);
     }
   }, [status, search, fromDate, toDate, assignedEmployeeId, page, limit]);
 
   useEffect(() => {
-    fetchOrders();
-    return () => abortRef.current?.abort();
+    const initialFetch = setTimeout(() => fetchOrders(), 0);
+    const refresh = () => {
+      if (document.visibilityState === "visible") fetchOrders({ silent: true });
+    };
+    const timer = setInterval(refresh, 60000);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      clearTimeout(initialFetch);
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", refresh);
+      abortRef.current?.abort();
+    };
   }, [fetchOrders]);
 
   return { orders, meta, loading, error, refetch: fetchOrders };
@@ -71,8 +82,19 @@ export function useOrderStatusCounts(isAuthenticated = true) {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    fetchCounts();
-  }, [fetchCounts]);
+    if (!isAuthenticated) return;
+    const initialFetch = setTimeout(() => fetchCounts(), 0);
+    const refresh = () => {
+      if (document.visibilityState === "visible") fetchCounts();
+    };
+    const timer = setInterval(refresh, 60000);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      clearTimeout(initialFetch);
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, [fetchCounts, isAuthenticated]);
 
   return { counts, loading, refetch: fetchCounts };
 }

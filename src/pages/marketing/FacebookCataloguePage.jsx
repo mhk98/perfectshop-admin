@@ -89,7 +89,7 @@ export default function FacebookCataloguePage() {
           type="button"
           onClick={handleRefresh}
           disabled={loading}
-          className="inline-flex items-center gap-1.5 rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-600 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-teal-600 disabled:opacity-50"
         >
           <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
           {loading ? "Refreshing..." : "Update Product Feed"}

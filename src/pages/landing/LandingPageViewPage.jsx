@@ -1,3 +1,4 @@
+import { useCheckoutSession } from "../../utils/useCheckoutSession";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
@@ -165,6 +166,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const [showTrackOrder, setShowTrackOrder] = useState(false);
   const [footerSettings, setFooterSettings] = useState(null);
   const [footerPages, setFooterPages] = useState([]);
+  const checkout = useCheckoutSession();
   const incompleteOrderIdRef = useRef(null);
   const incompletePhoneRef = useRef("");
   const leadTrackedOrderIdRef = useRef(null);
@@ -179,7 +181,14 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const regularPage = isRegularLandingPage(campaign);
   const price = toNumber(campaign?.price, regularPage ? 4100 : 699);
   const originalPrice = toNumber(campaign?.originalPrice, regularPage ? 5600 : 1500);
-  const phone = "01355945078";
+  const phone =
+    String(campaign?.phone || "").trim() ||
+    footerSettings?.header?.supportPhone ||
+    footerSettings?.footer?.supportPhone ||
+    footerSettings?.contact?.hotlineNumber ||
+    footerSettings?.contact?.phoneNumber ||
+    footerSettings?.contact?.phone ||
+    "";
   const shortDescription = stripHtml(campaign?.shortDescription || "");
   const descriptionTitle =
     campaign?.descriptionTitle || "এই ক্যাম্পেইনের বিশেষ অফার";
@@ -363,6 +372,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     const tracking = getTrackingClickData();
 
     return {
+      checkoutKey: checkout.getKey(normalizedPhone),
       ...(incompleteOrderId ? { incompleteOrderId } : {}),
       deviceId: getLandingDeviceId(),
       customerName: form.name.trim(),
@@ -404,6 +414,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     }
 
     const timer = window.setTimeout(async () => {
+      if (checkout.submitting.current) return;
       try {
         const response = await orderService.saveIncompleteOrder(
           buildLandingOrderPayload({ status: "incomplete", phoneNumber: normalizedPhone }),
@@ -450,7 +461,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   ]);
 
   async function handlePlaceOrder() {
-    if (placingOrder || placedOrder) return;
+    if (checkout.submitting.current || placingOrder || placedOrder) return;
     startCheckout();
     setOrderError("");
     const normalizedPhone = normalizeBangladeshPhone(form.phone);
@@ -471,6 +482,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       return;
     }
 
+    checkout.submitting.current = true;
     setPlacingOrder(true);
     const selectedItems = getSelectedOrderItems();
     const contentId = String(selectedItems[0]?.productId || campaign?.productId || campaign?.Id || "");
@@ -500,6 +512,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       const response = await orderService.createOrder(payload);
       const placedOrderData = response.data || payload;
       setPlacedOrder(placedOrderData);
+      checkout.complete();
       incompleteOrderIdRef.current = null;
       incompletePhoneRef.current = "";
       leadTrackedOrderIdRef.current = null;
@@ -518,6 +531,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
+      checkout.submitting.current = false;
       setOrderError(err.message || "Order create failed. Please try again.");
     } finally {
       setPlacingOrder(false);
@@ -907,7 +921,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
                     type="button"
                     onClick={handlePlaceOrder}
                     disabled={placingOrder}
-                    className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-500 px-4 py-3 text-sm font-black text-white shadow-sm transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-500 px-4 py-3 text-sm font-black text-gray-900 shadow-sm transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <Lock size={14} />
                     {placingOrder ? "Placing..." : "Place Order"}
@@ -1182,9 +1196,6 @@ function RegularLandingTemplate({ data, campaign }) {
     productName,
     title,
     subTitle,
-    price,
-    // eslint-disable-next-line no-unused-vars -- used by the hidden price offer section
-    originalPrice,
     phone,
     shortDescription,
     descriptionTitle,
@@ -1223,7 +1234,11 @@ function RegularLandingTemplate({ data, campaign }) {
   const reviewRegularPriceLabel = regularData.reviewRegularPriceLabel || "";
   const reviewOfferPriceLabel = regularData.reviewOfferPriceLabel || "";
   const reviewButtonText = regularData.reviewButtonText || "";
-  // eslint-disable-next-line no-unused-vars -- used by the hidden price offer section
+  // Page-level prices win; otherwise show the first checkout product's prices.
+  const reviewOfferPrice =
+    toNumber(campaign?.price, 0) || toNumber(productOptions[0]?.price, 0);
+  const reviewRegularPrice =
+    toNumber(campaign?.originalPrice, 0) || toNumber(productOptions[0]?.originalPrice, 0);
   const hasReviewSectionContent = Boolean(
     reviewHeading ||
     reviewSubHeading ||
@@ -1290,7 +1305,6 @@ function RegularLandingTemplate({ data, campaign }) {
         </section>
       )}
 
-      {/* Price offer section hidden for now
       {hasReviewSectionContent && (
         <section className="px-4 py-14 text-center" style={{ backgroundColor: colors.sectionBgColor }}>
           {reviewHeading && (
@@ -1303,14 +1317,14 @@ function RegularLandingTemplate({ data, campaign }) {
               {reviewSubHeading}
             </p>
           )}
-          {reviewRegularPriceLabel && (
+          {reviewRegularPriceLabel && reviewRegularPrice > 0 && (
             <p className="mt-12 text-2xl font-black text-slate-600">
-              {reviewRegularPriceLabel} <span className="line-through">{formatMoney(originalPrice)}/- টাকা</span>
+              {reviewRegularPriceLabel} <span className="line-through">{formatMoney(reviewRegularPrice)}/- টাকা</span>
             </p>
           )}
-          {reviewOfferPriceLabel && (
+          {reviewOfferPriceLabel && reviewOfferPrice > 0 && (
             <p className="mt-5 text-3xl font-black md:text-5xl" style={{ color: colors.headingColor }}>
-              {reviewOfferPriceLabel} <span className="text-green-600">{formatMoney(price)}/- টাকা</span>
+              {reviewOfferPriceLabel} <span className="text-green-600">{formatMoney(reviewOfferPrice)}/- টাকা</span>
             </p>
           )}
           {reviewButtonText && (
@@ -1320,7 +1334,6 @@ function RegularLandingTemplate({ data, campaign }) {
           )}
         </section>
       )}
-      */}
 
       <section className="px-4 py-16 text-center">
         <div className="mx-auto max-w-5xl">
@@ -1383,14 +1396,16 @@ function RegularLandingTemplate({ data, campaign }) {
               <p>✅ ১০০% অরিজিনাল পণ্য ✅ দ্রুত ডেলিভারি ✅ ক্যাশ অন ডেলিভারি সুবিধা ✅ সহজ অর্ডার প্রক্রিয়া</p>
             )}
           </div>
-          <a
-            href={`tel:${String(phone).replace(/\s+/g, "")}`}
-            onClick={() => trackLandingContactClick("Landing phone", phone)}
-            className="mt-12 inline-flex items-center justify-center rounded-full border-4 border-white px-8 py-3 text-xl font-black shadow"
-            style={{ backgroundColor: colors.buttonColor, color: colors.buttonTextColor }}
-          >
-            📞 {phone}
-          </a>
+          {phone ? (
+            <a
+              href={`tel:${String(phone).replace(/\s+/g, "")}`}
+              onClick={() => trackLandingContactClick("Landing phone", phone)}
+              className="mt-12 inline-flex items-center justify-center rounded-full border-4 border-white px-8 py-3 text-xl font-black shadow"
+              style={{ backgroundColor: colors.buttonColor, color: colors.buttonTextColor }}
+            >
+              📞 {phone}
+            </a>
+          ) : null}
         </div>
       </section>
 
@@ -2497,7 +2512,7 @@ function OrderFormBlock({ data, compact }) {
               type="button"
               onClick={onPlaceOrder}
               disabled={placingOrder}
-              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-500 px-4 py-3 text-sm font-black text-white shadow-sm transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-500 px-4 py-3 text-sm font-black text-gray-900 shadow-sm transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Lock size={14} />
               {placingOrder ? "Placing..." : "Place Order"}

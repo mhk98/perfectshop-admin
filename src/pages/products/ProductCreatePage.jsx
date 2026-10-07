@@ -540,7 +540,7 @@ export default function ProductCreatePage({ onNavigate }) {
             <input type="number" className={inputCls} placeholder="Enter Old Price" value={bulkPrice.oldPrice} onChange={e => setBulkPrice(prev => ({ ...prev, oldPrice: e.target.value }))} />
             <input type="number" className={inputCls} placeholder="Enter New Price" value={bulkPrice.newPrice} onChange={e => setBulkPrice(prev => ({ ...prev, newPrice: e.target.value }))} />
             <input type="number" className={inputCls} placeholder="Enter Stock" value={bulkPrice.stock} onChange={e => setBulkPrice(prev => ({ ...prev, stock: e.target.value }))} />
-            <button type="button" onClick={applyBulkPrice} className="rounded-lg bg-indigo-600 px-4 text-xs font-bold text-white">
+            <button type="button" onClick={applyBulkPrice} className="rounded-lg bg-indigo-600 px-4 text-xs font-bold text-gray-900">
               Apply Price
             </button>
           </div>

@@ -221,7 +221,7 @@ export default function SmsGatewayPage() {
                 <div className="flex items-center gap-2 text-sm font-bold text-gray-800">
                   <MessageSquare
                     size={16}
-                    className={form.type === key ? "text-teal-600" : "text-gray-400"}
+                    className={form.type === key ? "text-teal-800" : "text-gray-400"}
                   />
                   {item.label}
                 </div>
@@ -279,7 +279,7 @@ export default function SmsGatewayPage() {
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-1.5 rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-600 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-teal-600 disabled:opacity-50"
             >
               {saving ? "Saving..." : "Submit"}
             </button>
@@ -287,7 +287,7 @@ export default function SmsGatewayPage() {
               type="button"
               onClick={handleTest}
               disabled={testing}
-              className="inline-flex items-center gap-1.5 rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-indigo-700 disabled:opacity-50"
             >
               <Send size={15} />
               {testing ? "Testing..." : "Test Configuration"}

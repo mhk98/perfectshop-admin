@@ -472,7 +472,7 @@ function ProductPurchaseHistoryPage({ product, loading, error, onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="rounded-full bg-indigo-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-indigo-700"
+          className="rounded-full bg-indigo-600 px-4 py-2 text-xs font-bold text-gray-900 transition hover:bg-indigo-700"
         >
           &lt; Back
         </button>
@@ -639,7 +639,7 @@ function ProductRow({
         )}
         {category && (
           <div className="mt-1">
-            <span className="inline-flex rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-indigo-600">
+            <span className="inline-flex rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-indigo-800">
               {category}
             </span>
           </div>

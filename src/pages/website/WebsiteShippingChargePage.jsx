@@ -55,7 +55,7 @@ export default function WebsiteShippingChargePage({ onEdit, onCreate }) {
             ▶ টিউটোরিয়াল দেখুন
           </button>
           <button type="button" onClick={onCreate}
-            className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition">
+            className="bg-indigo-500 hover:bg-indigo-600 text-gray-900 text-sm font-semibold px-5 py-2 rounded-lg transition">
             Create
           </button>
         </div>
@@ -130,7 +130,7 @@ export default function WebsiteShippingChargePage({ onEdit, onCreate }) {
           </span>
           <div className="flex gap-1">
             <PagBtn onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} label="‹" />
-            <button className="w-7 h-7 rounded bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">
+            <button className="w-7 h-7 rounded bg-indigo-500 text-gray-900 text-xs font-bold flex items-center justify-center">
               {page}
             </button>
             <PagBtn onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages} label="›" />

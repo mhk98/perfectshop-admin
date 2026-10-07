@@ -104,10 +104,10 @@ export default function AdminRoleEditPage({ role, onSave, onNavigate }) {
     <div className="flex-1 overflow-y-auto p-4">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-lg font-bold text-gray-800">
-          Role Permissions — <span className="text-indigo-600 capitalize">{role?.role}</span>
+          Role Permissions — <span className="text-indigo-800 capitalize">{role?.role}</span>
         </h1>
         <button type="button" onClick={() => onNavigate && onNavigate('admin_roles')}
-          className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition">
+          className="bg-indigo-500 hover:bg-indigo-600 text-gray-900 text-sm font-semibold px-5 py-2 rounded-lg transition">
           Manage
         </button>
       </div>
@@ -154,7 +154,7 @@ export default function AdminRoleEditPage({ role, onSave, onNavigate }) {
         </div>
 
         <button type="submit" disabled={saving}
-          className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition">
+          className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-gray-900 text-sm font-semibold px-6 py-2.5 rounded-lg transition">
           {saving ? 'Saving...' : 'Save Permissions'}
         </button>
       </form>

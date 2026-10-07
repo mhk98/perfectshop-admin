@@ -71,7 +71,7 @@ export default function PaymentGatewayPage() {
           <div className="space-y-2">
             {Object.entries(forms).map(([key, item]) => (
               <button key={key} type="button" onClick={() => setActiveGateway(key)}
-                className={`h-10 w-full rounded border text-sm font-semibold transition ${activeGateway === key ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-indigo-500 bg-white text-indigo-600 hover:bg-indigo-50'}`}>
+                className={`h-10 w-full rounded border text-sm font-semibold transition ${activeGateway === key ? 'border-indigo-600 bg-indigo-600 text-gray-900' : 'border-indigo-500 bg-white text-indigo-800 hover:bg-indigo-50'}`}>
                 {item.label}
               </button>
             ))}
@@ -88,10 +88,10 @@ export default function PaymentGatewayPage() {
               <Field label="Status"><Toggle checked={form.status} onChange={() => setField('status', !form.status)} /></Field>
             </div>
             <button type="submit" disabled={saving}
-              className="mt-6 rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-600 disabled:opacity-50">
+              className="mt-6 rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-teal-600 disabled:opacity-50">
               {saving ? 'Saving...' : 'Submit'}
             </button>
-            <button type="button" onClick={handleTest} disabled={testing} className="ml-2 mt-6 rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">{testing ? 'Testing...' : 'Test Connection'}</button>
+            <button type="button" onClick={handleTest} disabled={testing} className="ml-2 mt-6 rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900 disabled:opacity-50">{testing ? 'Testing...' : 'Test Connection'}</button>
           </form>
         </div>
       </div>

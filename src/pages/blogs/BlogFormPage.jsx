@@ -52,7 +52,7 @@ export default function BlogFormPage({ mode = 'create', blog, onSave, onNavigate
         <button
           type="button"
           onClick={() => onNavigate('blog')}
-          className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
+          className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-indigo-700"
         >
           Manage
         </button>
@@ -109,7 +109,7 @@ export default function BlogFormPage({ mode = 'create', blog, onSave, onNavigate
             </button>
           </label>
 
-          <button type="submit" className="rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-600">
+          <button type="submit" className="rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-teal-600">
             Submit
           </button>
         </form>

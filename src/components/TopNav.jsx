@@ -332,34 +332,34 @@ export default function TopNav({
 
         <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
           <NavBtn
-            color="bg-[#F2A900]"
+            color="bg-[#FFC107]"
             label="Visit Site"
             onClick={() =>
               window.open(SITE_URL, "_blank", "noopener,noreferrer")
             }
           />
           <NavBtn
-            color="bg-[#0A0A0A]"
+            color="bg-[#141413]"
             label="Landing Page"
             onClick={() => onQuickNavigate?.("landing")}
           />
           <NavBtn
-            color="bg-[#D18A00]"
+            color="bg-[#E09A00]"
             label="Visitors"
             onClick={() => onQuickNavigate?.("visitors")}
           />
           <NavBtn
-            color="bg-[#333333]"
+            color="bg-[#3D3D3A]"
             label="POS"
             onClick={() => onQuickNavigate?.("pos")}
           />
           <NavBtn
-            color="bg-[#F2A900]"
+            color="bg-[#FFC107]"
             label="Expense"
             onClick={() => onQuickNavigate?.("expense")}
           />
           <NavBtn
-            color="bg-[#333333]"
+            color="bg-[#3D3D3A]"
             label="Full Tutorial"
             onClick={() =>
               TUTORIAL_URL
@@ -523,7 +523,7 @@ export default function TopNav({
             onClick={() => setDropdownOpen((v) => !v)}
             className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-gray-100 transition"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0A0A0A] via-[#F2A900] to-[#FFC107] flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#141413] via-[#FFC107] to-[#FFD84D] flex items-center justify-center shrink-0">
               {user?.image ? (
                 <img
                   src={assetUrl(user.image)}
@@ -591,7 +591,7 @@ function NavBtn({ color, label, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`${color} text-white text-xs font-medium px-3 py-1.5 rounded-full hover:opacity-90 transition`}
+      className={`${color} ${color.includes("#FFC107") || color.includes("#E09A00") ? "text-gray-900" : "text-white"} text-xs font-medium px-3 py-1.5 rounded-full hover:opacity-90 transition`}
     >
       {label}
     </button>

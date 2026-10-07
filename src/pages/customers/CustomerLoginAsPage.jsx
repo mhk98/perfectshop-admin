@@ -84,7 +84,7 @@ export default function CustomerLoginAsPage({ customer, onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="ml-auto text-xs text-indigo-600 hover:underline font-medium"
+          className="ml-auto text-xs text-indigo-800 hover:underline font-medium"
         >
           ← Back to Dashboard
         </button>
@@ -400,7 +400,7 @@ function EditTab({ name, phone, email, address }) {
         ))}
         <button
           type="submit"
-          className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition"
+          className="bg-teal-500 hover:bg-teal-600 text-gray-900 text-sm font-semibold px-5 py-2 rounded-lg transition"
         >
           Save Changes
         </button>
@@ -431,7 +431,7 @@ function PasswordTab() {
         )}
         <button
           type="submit"
-          className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition"
+          className="bg-indigo-500 hover:bg-indigo-600 text-gray-900 text-sm font-semibold px-5 py-2 rounded-lg transition"
         >
           Update Password
         </button>

@@ -500,8 +500,8 @@ export default function LandingPageCreatePage({ mode = 'create', campaign, onNav
           ctaText: form.ctaText,
           orderTitle: form.orderTitle,
           sizeTitle: form.sizeTitle,
-          deliveryInside: form.deliveryInside,
-          deliveryOutside: form.deliveryOutside,
+          deliveryInside: String(Math.max(Number(form.deliveryInside) || 0, 80)),
+          deliveryOutside: String(Math.max(Number(form.deliveryOutside) || 0, 130)),
         },
         status: form.status,
       };
@@ -728,6 +728,7 @@ export default function LandingPageCreatePage({ mode = 'create', campaign, onNav
               </label>
               <input
                 type="number"
+                min="80"
                 value={form.deliveryInside}
                 onChange={(e) => set('deliveryInside', e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
@@ -739,6 +740,7 @@ export default function LandingPageCreatePage({ mode = 'create', campaign, onNav
               </label>
               <input
                 type="number"
+                min="130"
                 value={form.deliveryOutside}
                 onChange={(e) => set('deliveryOutside', e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
@@ -1358,8 +1360,8 @@ function buildFormState(campaign) {
     ctaText: regularData.ctaText || 'অর্ডার করতে ক্লিক করুন',
     orderTitle: regularData.orderTitle || 'অর্ডার করতে আপনার সঠিক তথ্য দিয়ে নিচের ফর্মটি সম্পূর্ণ পূরণ করুন।',
     sizeTitle: regularData.sizeTitle || '',
-    deliveryInside: regularData.deliveryInside || '70',
-    deliveryOutside: regularData.deliveryOutside || '130',
+    deliveryInside: String(Math.max(Number(regularData.deliveryInside) || 0, 80)),
+    deliveryOutside: String(Math.max(Number(regularData.deliveryOutside) || 0, 130)),
     countdownStart: countdownRange.start,
     countdownEnd: countdownRange.end,
     campaignTemplate: TEMPLATES.includes(savedTemplate) ? savedTemplate : TEMPLATES[0],

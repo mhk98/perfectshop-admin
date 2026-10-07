@@ -1,20 +1,20 @@
 export const DEFAULT_ORDER_STATUSES = [
   { key: 'pending', label: 'Pending', color: '#3b82f6', className: 'bg-blue-500 text-white' },
   { key: 'packaging', label: 'Packaging', color: '#8b5cf6', className: 'bg-purple-500 text-white' },
-  { key: 'confirmed', label: 'Confirmed', color: '#14b8a6', className: 'bg-teal-500 text-white' },
+  { key: 'confirmed', label: 'Confirmed', color: '#14b8a6', className: 'bg-teal-500 text-gray-900' },
   { key: 'cancelled', label: 'Cancelled', color: '#ef4444', className: 'bg-red-500 text-white' },
   { key: 'returned', label: 'Returned', color: '#f59e0b', className: 'bg-amber-500 text-white' },
   { key: 'on_hold', label: 'On Hold', color: '#6b7280', className: 'bg-gray-400 text-white' },
-  { key: 'in_courier', label: 'In Courier', color: '#6366f1', className: 'bg-indigo-500 text-white' },
+  { key: 'in_courier', label: 'In Courier', color: '#6366f1', className: 'bg-indigo-500 text-gray-900' },
   { key: 'delivered', label: 'Delivered', color: '#22c55e', className: 'bg-green-500 text-white' },
   { key: 'incomplete', label: 'Incomplete', color: '#f97316', className: 'bg-orange-500 text-white' },
 ];
 
 const PALETTE = [
   { color: '#3b82f6', className: 'bg-blue-500 text-white' },
-  { color: '#14b8a6', className: 'bg-teal-500 text-white' },
+  { color: '#14b8a6', className: 'bg-teal-500 text-gray-900' },
   { color: '#8b5cf6', className: 'bg-purple-500 text-white' },
-  { color: '#6366f1', className: 'bg-indigo-500 text-white' },
+  { color: '#6366f1', className: 'bg-indigo-500 text-gray-900' },
   { color: '#22c55e', className: 'bg-green-500 text-white' },
   { color: '#ef4444', className: 'bg-red-500 text-white' },
   { color: '#f59e0b', className: 'bg-amber-500 text-white' },

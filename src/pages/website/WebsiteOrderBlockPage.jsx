@@ -231,7 +231,7 @@ export default function WebsiteOrderBlockPage() {
           <button
             type="submit"
             disabled={saving}
-            className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition"
+            className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-gray-900 text-sm font-semibold px-6 py-2.5 rounded-lg transition"
           >
             {saving ? 'Saving...' : 'Submit'}
           </button>

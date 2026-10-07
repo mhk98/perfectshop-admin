@@ -55,7 +55,7 @@ export default function CouponCodePage({ onCreate, onEdit }) {
           <button type="button" className="inline-flex items-center gap-1.5 rounded-full bg-rose-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose-600">
             <PlayCircle size={16} /> টিউটোরিয়াল দেখুন
           </button>
-          <button type="button" onClick={onCreate} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700">Create</button>
+          <button type="button" onClick={onCreate} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-indigo-700">Create</button>
         </div>
       </div>
 
@@ -104,7 +104,7 @@ export default function CouponCodePage({ onCreate, onEdit }) {
                       <button type="button" title="Toggle Status" onClick={() => handleToggleStatus(item)}
                         className="flex h-7 w-8 items-center justify-center rounded bg-gray-600 text-white transition hover:bg-gray-700"><ThumbsDown size={13} /></button>
                       <button type="button" title="Edit" onClick={() => onEdit && onEdit(item)}
-                        className="flex h-7 w-8 items-center justify-center rounded bg-indigo-600 text-white transition hover:bg-indigo-700"><Pencil size={13} /></button>
+                        className="flex h-7 w-8 items-center justify-center rounded bg-indigo-600 text-gray-900 transition hover:bg-indigo-700"><Pencil size={13} /></button>
                       <button type="button" title="Delete" onClick={() => handleDelete(item)}
                         className="flex h-7 w-8 items-center justify-center rounded bg-rose-500 text-white transition hover:bg-rose-600"><Trash2 size={13} /></button>
                     </div>
@@ -118,9 +118,9 @@ export default function CouponCodePage({ onCreate, onEdit }) {
         <div className="flex items-center justify-between py-4 text-sm font-semibold text-gray-500">
           <span>Total {meta?.count ?? items.length} entries</span>
           <div className="flex items-center gap-2 text-slate-400">
-            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="disabled:opacity-40 transition hover:text-indigo-600">‹</button>
-            {items.length > 0 && <button className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white">{page}</button>}
-            <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages} className="disabled:opacity-40 transition hover:text-indigo-600">›</button>
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="disabled:opacity-40 transition hover:text-indigo-800">‹</button>
+            {items.length > 0 && <button className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-gray-900">{page}</button>}
+            <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages} className="disabled:opacity-40 transition hover:text-indigo-800">›</button>
           </div>
         </div>
       </div>
@@ -135,8 +135,8 @@ function SortableHeader({ label, sortKey, sort, onSort, className = '' }) {
       <div className="flex items-center justify-between gap-2">
         <span>{label}</span>
         <span className="flex flex-col">
-          <ChevronUp   size={10} className={active && sort.dir === 'asc'  ? 'text-indigo-500' : 'text-gray-300'} />
-          <ChevronDown size={10} className={active && sort.dir === 'desc' ? 'text-indigo-500' : 'text-gray-300'} />
+          <ChevronUp   size={10} className={active && sort.dir === 'asc'  ? 'text-indigo-800' : 'text-gray-300'} />
+          <ChevronDown size={10} className={active && sort.dir === 'desc' ? 'text-indigo-800' : 'text-gray-300'} />
         </span>
       </div>
     </th>

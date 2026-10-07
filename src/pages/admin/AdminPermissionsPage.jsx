@@ -35,7 +35,7 @@ export default function AdminPermissionsPage({ onEditPermission }) {
                     <td className="px-4 py-3 max-w-xs">
                       <div className="flex flex-wrap gap-1">
                         {perms.slice(0, 5).map((p) => (
-                          <span key={p} className="px-1.5 py-0.5 rounded text-[10px] bg-indigo-50 text-indigo-600 font-medium">{p}</span>
+                          <span key={p} className="px-1.5 py-0.5 rounded text-[10px] bg-indigo-50 text-indigo-800 font-medium">{p}</span>
                         ))}
                         {perms.length > 5 && (
                           <span className="px-1.5 py-0.5 rounded text-[10px] bg-gray-100 text-gray-500">+{perms.length - 5} more</span>

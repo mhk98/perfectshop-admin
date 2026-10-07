@@ -40,7 +40,7 @@ export default function WebsiteOrderStatusPage({ onEdit, onCreate }) {
             ▶ টিউটোরিয়াল দেখুন
           </button>
           <button type="button" onClick={onCreate}
-            className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition">
+            className="bg-indigo-500 hover:bg-indigo-600 text-gray-900 text-sm font-semibold px-5 py-2 rounded-lg transition">
             Create
           </button>
         </div>

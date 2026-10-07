@@ -240,7 +240,7 @@ export default function PurchaseFormPage({
           <button
             type="button"
             onClick={() => onNavigate && onNavigate("purchase_list")}
-            className="rounded-full bg-indigo-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-indigo-700"
+            className="rounded-full bg-indigo-600 px-4 py-2 text-xs font-semibold text-gray-900 transition hover:bg-indigo-700"
           >
             Manage
           </button>
@@ -470,7 +470,7 @@ export default function PurchaseFormPage({
         <button
           type="submit"
           disabled={saving}
-          className="mt-6 h-10 w-full bg-teal-500 text-sm font-semibold text-white transition hover:bg-teal-600 disabled:opacity-60"
+          className="mt-6 h-10 w-full bg-teal-500 text-sm font-semibold text-gray-900 transition hover:bg-teal-600 disabled:opacity-60"
         >
           {saving
             ? "Saving..."

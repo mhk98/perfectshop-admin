@@ -32,7 +32,7 @@ export default function TagManagerFormPage({ mode = 'create', tag, onSave, onNav
           <button type="button" className="inline-flex items-center gap-1.5 rounded-full bg-rose-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose-600">
             <PlayCircle size={16} /> টিউটোরিয়াল দেখুন
           </button>
-          <button type="button" onClick={() => onNavigate('tag_manager')} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700">
+          <button type="button" onClick={() => onNavigate('tag_manager')} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-indigo-700">
             Manage
           </button>
         </div>
@@ -53,7 +53,7 @@ export default function TagManagerFormPage({ mode = 'create', tag, onSave, onNav
               <span className={`inline-block h-6 w-6 rounded-full bg-white shadow transition-transform duration-200 ${form.status === 'Active' ? 'translate-x-7' : 'translate-x-1'}`} />
             </button>
           </label>
-          <button type="submit" disabled={saving} className="rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-600 disabled:opacity-50">
+          <button type="submit" disabled={saving} className="rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-teal-600 disabled:opacity-50">
             {saving ? 'Saving...' : 'Submit'}
           </button>
         </form>

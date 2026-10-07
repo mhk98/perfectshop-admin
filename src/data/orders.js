@@ -22,9 +22,9 @@ const courierColors = {
 
 const statusColors = {
   pending: "bg-blue-500 text-white",
-  confirmed: "bg-teal-500 text-white",
+  confirmed: "bg-teal-500 text-gray-900",
   packaging: "bg-purple-500 text-white",
-  in_courier: "bg-indigo-500 text-white",
+  in_courier: "bg-indigo-500 text-gray-900",
   delivered: "bg-green-500 text-white",
   cancelled: "bg-red-500 text-white",
   returned: "bg-amber-500 text-white",

@@ -44,7 +44,7 @@ export default function AttributePage({ onNavigate, onEditAttribute }) {
         <div className="flex flex-wrap items-center gap-2 sm:justify-end">
           <button
             onClick={() => onNavigate && onNavigate('create_attribute')}
-            className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition"
+            className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-gray-900 text-xs font-semibold px-4 py-2 rounded-full transition"
           >
             <Plus size={14} />
             Create
@@ -141,7 +141,7 @@ export default function AttributePage({ onNavigate, onEditAttribute }) {
             <button className="flex h-8 w-8 items-center justify-center rounded text-gray-300 hover:bg-gray-100">
               <ChevronLeft size={14} />
             </button>
-            <button className="h-8 w-8 rounded-full bg-indigo-600 text-xs font-bold text-white shadow-sm">1</button>
+            <button className="h-8 w-8 rounded-full bg-indigo-600 text-xs font-bold text-gray-900 shadow-sm">1</button>
             <button className="flex h-8 w-8 items-center justify-center rounded text-gray-300 hover:bg-gray-100">
               <ChevronRight size={14} />
             </button>
@@ -155,7 +155,7 @@ export default function AttributePage({ onNavigate, onEditAttribute }) {
 function StatusBadge({ status }) {
   const active = status === 'Active' || status === 'active';
   return (
-    <span className={`inline-flex rounded px-1.5 py-0.5 text-[10px] font-bold ${active ? 'bg-teal-100 text-teal-600' : 'bg-red-100 text-red-600'}`}>
+    <span className={`inline-flex rounded px-1.5 py-0.5 text-[10px] font-bold ${active ? 'bg-teal-100 text-teal-800' : 'bg-red-100 text-red-600'}`}>
       {active ? 'Active' : 'Inactive'}
     </span>
   );

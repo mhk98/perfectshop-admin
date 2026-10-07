@@ -30,7 +30,7 @@ export default function StockAlert({ onViewAll }) {
         <span className="text-white font-semibold text-sm">Products</span>
         <button
           onClick={onViewAll}
-          className="bg-teal-400 hover:bg-teal-500 text-white text-xs font-medium px-3 py-1 rounded-full transition"
+          className="bg-teal-400 hover:bg-teal-500 text-gray-900 text-xs font-medium px-3 py-1 rounded-full transition"
         >
           View All
         </button>
