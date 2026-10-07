@@ -612,6 +612,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
         productName={productName}
         productImage={bannerImage}
         price={price}
+        items={selectedProducts}
         deliveryCharge={deliveryCharge}
         total={total}
         phoneNumber={phone}
@@ -1567,6 +1568,7 @@ function OrderSuccessPage({
   productName,
   productImage,
   price,
+  items = [],
   deliveryCharge,
   total,
   phoneNumber,
@@ -1577,6 +1579,9 @@ function OrderSuccessPage({
 }) {
   const orderNumber = order.orderId || `#${order.Id || "Pending"}`;
   const orderDate = order.createdAt ? new Date(order.createdAt) : new Date();
+  const orderItems = items.length
+    ? items
+    : [{ id: "default", name: productName, image: productImage, price, qty: 1 }];
 
   return (
     <div className="flex-1 overflow-y-auto bg-gray-50 text-slate-900">
@@ -1649,25 +1654,32 @@ function OrderSuccessPage({
             <div className="my-6 border-t border-slate-200" />
 
             <h3 className="text-sm font-black text-slate-900">Order Items</h3>
-            <div className="mt-4 flex items-center gap-4 rounded-lg bg-slate-50 p-4">
-              <img
-                src={productImage || heroImage}
-                alt={productName}
-                className="h-16 w-16 rounded object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-black text-slate-900">
-                  {productName}
-                </p>
-                <p className="mt-2 text-xs text-slate-500">Quantity: 1</p>
+            {orderItems.map((item) => (
+              <div
+                key={item.id}
+                className="mt-4 flex items-center gap-4 rounded-lg bg-slate-50 p-4"
+              >
+                <img
+                  src={item.image || heroImage}
+                  alt={item.name}
+                  className="h-16 w-16 rounded object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-black text-slate-900">
+                    {item.name}
+                  </p>
+                  <p className="mt-2 text-xs text-slate-500">
+                    Quantity: {item.qty}
+                  </p>
+                </div>
+                <div className="text-right text-sm font-black text-slate-900">
+                  BDT {formatMoney(item.price)} × {item.qty}
+                  <p className="text-xs text-blue-600">
+                    BDT {formatMoney(item.price * item.qty)}
+                  </p>
+                </div>
               </div>
-              <div className="text-right text-sm font-black text-slate-900">
-                BDT {formatMoney(price)} × 1
-                <p className="text-xs text-blue-600">
-                  BDT {formatMoney(price)}
-                </p>
-              </div>
-            </div>
+            ))}
 
             <div className="mt-5 space-y-3 border-t border-slate-200 pt-5 text-sm">
               <InfoRow
