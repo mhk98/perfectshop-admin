@@ -26,6 +26,7 @@ import {
   websitePageService,
 } from "../../services/websiteService";
 import { imageUrl } from "../../utils/assetUrl";
+import { apiRequest } from "../../utils/apiClient";
 
 const SHIPPING_OPTIONS = [
   { id: "inside", label: "Inside Dhaka", charge: 80 },
@@ -202,8 +203,33 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const [selectedProducts, setSelectedProducts] = useState(() =>
     initializeSelectedProducts(productOptions),
   );
+  const [freeShippingIds, setFreeShippingIds] = useState(() => new Set());
+  useEffect(() => {
+    let active = true;
+    const ids = [
+      ...new Set(productOptions.map((item) => Number(item.productId)).filter(Boolean)),
+    ];
+    Promise.all(
+      ids.map((id) =>
+        apiRequest(`/product/storefront/${id}`)
+          .then((res) => (res?.data?.freeShipping ? id : null))
+          .catch(() => null),
+      ),
+    ).then((results) => {
+      if (active) setFreeShippingIds(new Set(results.filter(Boolean)));
+    });
+    return () => {
+      active = false;
+    };
+  }, [productOptions]);
+  const allItemsFreeShipping =
+    selectedProducts.length > 0 &&
+    selectedProducts.every((item) => freeShippingIds.has(Number(item.productId)));
+  const shippingOptions = allItemsFreeShipping
+    ? SHIPPING_OPTIONS.map((option) => ({ ...option, charge: 0 }))
+    : SHIPPING_OPTIONS;
   const deliveryCharge =
-    SHIPPING_OPTIONS.find((option) => option.id === form.shipping)?.charge || 0;
+    shippingOptions.find((option) => option.id === form.shipping)?.charge || 0;
   const productSubtotal = selectedProducts.reduce(
     (sum, item) => sum + item.price * item.qty,
     0,
@@ -561,6 +587,8 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     prizeImageSource,
     reviewImages,
     deliveryCharge,
+    shippingOptions,
+    allItemsFreeShipping,
     productOptions,
     selectedProducts,
     productSubtotal,
@@ -825,7 +853,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
                   icon={<Truck size={15} />}
                 >
                   <div className="grid gap-3 md:grid-cols-2">
-                    {SHIPPING_OPTIONS.map((option) => (
+                    {shippingOptions.map((option) => (
                       <RadioOption
                         key={option.id}
                         selected={form.shipping === option.id}
@@ -1201,6 +1229,8 @@ function RegularLandingTemplate({ data, campaign }) {
     descriptionTitle,
     bannerImage,
     deliveryCharge,
+    shippingOptions,
+    allItemsFreeShipping,
     productOptions,
     selectedProducts,
     productSubtotal,
@@ -1431,7 +1461,7 @@ function RegularLandingTemplate({ data, campaign }) {
               <RegularOrderInput icon={<Phone size={18} />} placeholder="মোবাইল নাম্বার দিন" value={form.phone} onChange={(value) => set("phone", value)} />
               <RegularOrderInput icon={<Package size={18} />} placeholder="আপনার সম্পূর্ণ ঠিকানা" value={form.address} onChange={(value) => set("address", value)} />
               <div className="mt-4 overflow-hidden rounded border border-slate-200">
-                {SHIPPING_OPTIONS.map((option) => (
+                {shippingOptions.map((option) => (
                   <button
                     key={option.id}
                     type="button"
@@ -1439,7 +1469,8 @@ function RegularLandingTemplate({ data, campaign }) {
                     className="flex w-full items-center gap-3 border-b border-slate-200 px-4 py-3 text-left text-sm last:border-b-0"
                   >
                     <span className={`h-5 w-5 rounded-full border ${form.shipping === option.id ? "border-green-600 bg-green-600" : "border-slate-300"}`} />
-                    {option.label === "Inside Dhaka" ? "ঢাকার ভিতরে ৮০ টাকা" : option.label === "Outside Dhaka" ? "ঢাকার বাইরে ১৩০ টাকা" : `${option.label} ${option.charge} টাকা`}
+                    {option.label === "Inside Dhaka" ? "ঢাকার ভিতরে" : option.label === "Outside Dhaka" ? "ঢাকার বাইরে" : option.label}{" "}
+                    {allItemsFreeShipping ? "ফ্রি ডেলিভারি" : option.label === "Inside Dhaka" ? "৮০ টাকা" : option.label === "Outside Dhaka" ? "১৩০ টাকা" : `${option.charge} টাকা`}
                   </button>
                 ))}
               </div>
@@ -2354,6 +2385,7 @@ function OrderFormBlock({ data, compact }) {
     price,
     bannerImage,
     deliveryCharge,
+    shippingOptions,
     total,
     placingOrder,
     orderError,
@@ -2410,7 +2442,7 @@ function OrderFormBlock({ data, compact }) {
             <div
               className={compact ? "grid gap-3" : "grid gap-3 md:grid-cols-2"}
             >
-              {SHIPPING_OPTIONS.map((option) => (
+              {shippingOptions.map((option) => (
                 <RadioOption
                   key={option.id}
                   selected={form.shipping === option.id}
