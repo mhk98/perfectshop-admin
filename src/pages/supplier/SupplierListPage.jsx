@@ -151,7 +151,7 @@ export default function SupplierListPage({ onNavigate, onEditSupplier, onPayment
                     </button>
                     <button
                       onClick={() => onEditSupplier && onEditSupplier(s)}
-                      className="w-7 h-7 rounded bg-teal-500 text-white hover:bg-teal-600 flex items-center justify-center"
+                      className="w-7 h-7 rounded bg-teal-500 text-gray-900 hover:bg-teal-600 flex items-center justify-center"
                       title="Edit"
                     >
                       <Pencil size={13} />

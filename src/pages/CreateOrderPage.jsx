@@ -164,7 +164,11 @@ export default function CreateOrderPage({ onNavigate }) {
         orderDate: new Date().toISOString().slice(0, 10),
       };
 
+<<<<<<< HEAD
       await orderService.createStaffOrder(payload);
+=======
+      await orderService.createOrder(payload);
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
       checkout.complete();
       alert("Order সফলভাবে তৈরি হয়েছে!");
       clearCart();
@@ -244,7 +248,7 @@ export default function CreateOrderPage({ onNavigate }) {
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => onNavigate("dashboard")}
-            className="flex items-center gap-1.5 bg-teal-500 hover:bg-teal-600 text-white text-xs font-semibold px-4 py-2 rounded-lg transition"
+            className="flex items-center gap-1.5 bg-teal-500 hover:bg-teal-600 text-gray-900 text-xs font-semibold px-4 py-2 rounded-lg transition"
           >
             <LayoutDashboard size={14} />
             Dashboard
@@ -450,7 +454,7 @@ export default function CreateOrderPage({ onNavigate }) {
               ))}
               <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 text-xs">
                 <span className="font-bold text-gray-800">Total</span>
-                <span className="font-bold text-teal-600 text-sm">
+                <span className="font-bold text-teal-800 text-sm">
                   ৳ {total}
                 </span>
               </div>
@@ -460,7 +464,7 @@ export default function CreateOrderPage({ onNavigate }) {
             <button
               onClick={handleSubmit}
               disabled={cart.length === 0 || submitting}
-              className="w-full bg-teal-500 hover:bg-teal-600 disabled:opacity-40 text-white font-semibold text-sm py-2.5 rounded-xl transition"
+              className="w-full bg-teal-500 hover:bg-teal-600 disabled:opacity-40 text-gray-900 font-semibold text-sm py-2.5 rounded-xl transition"
             >
               {submitting ? "তৈরি হচ্ছে..." : "Order Submit"}
             </button>
@@ -479,7 +483,7 @@ export default function CreateOrderPage({ onNavigate }) {
               }}
               className={`px-3 py-2.5 cursor-pointer text-xs font-medium transition ${
                 activeCategory === "all"
-                  ? "bg-teal-500 text-white"
+                  ? "bg-teal-500 text-gray-900"
                   : "text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -498,7 +502,7 @@ export default function CreateOrderPage({ onNavigate }) {
                     }}
                     className={`flex items-center justify-between px-3 py-2.5 cursor-pointer text-xs font-medium transition ${
                       activeCategory === categoryKey
-                        ? "bg-teal-500 text-white"
+                        ? "bg-teal-500 text-gray-900"
                         : "text-gray-700 hover:bg-gray-50"
                     }`}
                   >
@@ -525,8 +529,8 @@ export default function CreateOrderPage({ onNavigate }) {
                               }}
                               className={`flex items-center justify-between px-3 py-2 text-xs cursor-pointer transition ${
                                 activeCategory === subKey
-                                  ? "bg-teal-50 text-teal-700 font-semibold"
-                                  : "text-gray-600 hover:bg-teal-50 hover:text-teal-700"
+                                  ? "bg-teal-50 text-teal-800 font-semibold"
+                                  : "text-gray-600 hover:bg-teal-50 hover:text-teal-800"
                               }`}
                             >
                               <span>{sub.name}</span>
@@ -550,8 +554,8 @@ export default function CreateOrderPage({ onNavigate }) {
                                       }}
                                       className={`px-3 py-1.5 text-[11px] cursor-pointer transition ${
                                         activeCategory === childKey
-                                          ? "text-teal-700 font-semibold"
-                                          : "text-gray-500 hover:text-teal-700"
+                                          ? "text-teal-800 font-semibold"
+                                          : "text-gray-500 hover:text-teal-800"
                                       }`}
                                     >
                                       {child.name}
@@ -649,7 +653,7 @@ function CartRow({ item, onRemove, onQty, onDisc }) {
         <div className="text-gray-500 text-[10px] mt-0.5">
           ৳ {item.price} × {item.qty}
         </div>
-        <span className="bg-teal-100 text-teal-700 text-[9px] font-bold px-1.5 py-0.5 rounded mt-0.5 inline-block">
+        <span className="bg-teal-100 text-teal-800 text-[9px] font-bold px-1.5 py-0.5 rounded mt-0.5 inline-block">
           {item.sku}
         </span>
       </td>
@@ -723,12 +727,12 @@ function ProductCard({ product, gradient, inCart, onAdd }) {
           <ShoppingCart
             size={12}
             className={
-              inCart ? "text-white" : "text-gray-500 group-hover:text-teal-600"
+              inCart ? "text-white" : "text-gray-500 group-hover:text-teal-800"
             }
           />
         </div>
         {inCart && (
-          <div className="absolute top-2 left-2 bg-teal-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+          <div className="absolute top-2 left-2 bg-teal-500 text-gray-900 text-[9px] font-bold px-1.5 py-0.5 rounded-full">
             Added
           </div>
         )}
@@ -743,7 +747,7 @@ function ProductCard({ product, gradient, inCart, onAdd }) {
           {product.name}
         </div>
         <div className="flex items-center justify-between mt-1.5">
-          <span className="text-xs font-bold text-teal-600">
+          <span className="text-xs font-bold text-teal-800">
             ৳ {product.price}
           </span>
           <span

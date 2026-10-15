@@ -26,6 +26,7 @@ import {
   websitePageService,
 } from "../../services/websiteService";
 import { imageUrl } from "../../utils/assetUrl";
+import { apiRequest } from "../../utils/apiClient";
 
 // Same rules as the storefront landing page and the order API (regularData.deliveryInside/Outside):
 // at least 80/130, and free when every selected product ships free.
@@ -214,12 +215,40 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const [selectedProducts, setSelectedProducts] = useState(() =>
     initializeSelectedProducts(productOptions),
   );
+<<<<<<< HEAD
   const allFreeShipping =
     selectedProducts.length > 0 && selectedProducts.every((item) => item.freeShipping);
   const shippingOptions = useMemo(
     () => getShippingOptions(campaign, allFreeShipping),
     [campaign, allFreeShipping],
   );
+=======
+  const [freeShippingIds, setFreeShippingIds] = useState(() => new Set());
+  useEffect(() => {
+    let active = true;
+    const ids = [
+      ...new Set(productOptions.map((item) => Number(item.productId)).filter(Boolean)),
+    ];
+    Promise.all(
+      ids.map((id) =>
+        apiRequest(`/product/storefront/${id}`)
+          .then((res) => (res?.data?.freeShipping ? id : null))
+          .catch(() => null),
+      ),
+    ).then((results) => {
+      if (active) setFreeShippingIds(new Set(results.filter(Boolean)));
+    });
+    return () => {
+      active = false;
+    };
+  }, [productOptions]);
+  const allItemsFreeShipping =
+    selectedProducts.length > 0 &&
+    selectedProducts.every((item) => freeShippingIds.has(Number(item.productId)));
+  const shippingOptions = allItemsFreeShipping
+    ? SHIPPING_OPTIONS.map((option) => ({ ...option, charge: 0 }))
+    : SHIPPING_OPTIONS;
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
   const deliveryCharge =
     shippingOptions.find((option) => option.id === form.shipping)?.charge || 0;
   const productSubtotal = selectedProducts.reduce(
@@ -582,6 +611,10 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     reviewImages,
     deliveryCharge,
     shippingOptions,
+<<<<<<< HEAD
+=======
+    allItemsFreeShipping,
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
     productOptions,
     selectedProducts,
     productSubtotal,
@@ -605,8 +638,14 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
         productName={productName}
         productImage={bannerImage}
         price={price}
+<<<<<<< HEAD
         deliveryCharge={placedOrder.deliveryCharge ?? deliveryCharge}
         total={placedOrder.total ?? total}
+=======
+        items={selectedProducts}
+        deliveryCharge={deliveryCharge}
+        total={total}
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
         phoneNumber={phone}
         onContinue={() => setPlacedOrder(null)}
         onTrack={() => {
@@ -942,7 +981,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
                     type="button"
                     onClick={handlePlaceOrder}
                     disabled={placingOrder}
-                    className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-500 px-4 py-3 text-sm font-black text-white shadow-sm transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-500 px-4 py-3 text-sm font-black text-gray-900 shadow-sm transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <Lock size={14} />
                     {placingOrder ? "Placing..." : "Place Order"}
@@ -1223,6 +1262,10 @@ function RegularLandingTemplate({ data, campaign }) {
     bannerImage,
     deliveryCharge,
     shippingOptions,
+<<<<<<< HEAD
+=======
+    allItemsFreeShipping,
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
     productOptions,
     selectedProducts,
     productSubtotal,
@@ -1461,7 +1504,12 @@ function RegularLandingTemplate({ data, campaign }) {
                     className="flex w-full items-center gap-3 border-b border-slate-200 px-4 py-3 text-left text-sm last:border-b-0"
                   >
                     <span className={`h-5 w-5 rounded-full border ${form.shipping === option.id ? "border-green-600 bg-green-600" : "border-slate-300"}`} />
+<<<<<<< HEAD
                     {`${option.banglaLabel} ${option.free ? "ফ্রি ডেলিভারি" : `${option.charge} টাকা`}`}
+=======
+                    {option.label === "Inside Dhaka" ? "ঢাকার ভিতরে" : option.label === "Outside Dhaka" ? "ঢাকার বাইরে" : option.label}{" "}
+                    {allItemsFreeShipping ? "ফ্রি ডেলিভারি" : option.label === "Inside Dhaka" ? "৮০ টাকা" : option.label === "Outside Dhaka" ? "১৩০ টাকা" : `${option.charge} টাকা`}
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
                   </button>
                 ))}
               </div>
@@ -1558,6 +1606,7 @@ function OrderSuccessPage({
   productName,
   productImage,
   price,
+  items = [],
   deliveryCharge,
   total,
   phoneNumber,
@@ -1568,6 +1617,9 @@ function OrderSuccessPage({
 }) {
   const orderNumber = order.orderId || `#${order.Id || "Pending"}`;
   const orderDate = order.createdAt ? new Date(order.createdAt) : new Date();
+  const orderItems = items.length
+    ? items
+    : [{ id: "default", name: productName, image: productImage, price, qty: 1 }];
 
   return (
     <div className="flex-1 overflow-y-auto bg-gray-50 text-slate-900">
@@ -1640,25 +1692,32 @@ function OrderSuccessPage({
             <div className="my-6 border-t border-slate-200" />
 
             <h3 className="text-sm font-black text-slate-900">Order Items</h3>
-            <div className="mt-4 flex items-center gap-4 rounded-lg bg-slate-50 p-4">
-              <img
-                src={productImage || heroImage}
-                alt={productName}
-                className="h-16 w-16 rounded object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-black text-slate-900">
-                  {productName}
-                </p>
-                <p className="mt-2 text-xs text-slate-500">Quantity: 1</p>
+            {orderItems.map((item) => (
+              <div
+                key={item.id}
+                className="mt-4 flex items-center gap-4 rounded-lg bg-slate-50 p-4"
+              >
+                <img
+                  src={item.image || heroImage}
+                  alt={item.name}
+                  className="h-16 w-16 rounded object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-black text-slate-900">
+                    {item.name}
+                  </p>
+                  <p className="mt-2 text-xs text-slate-500">
+                    Quantity: {item.qty}
+                  </p>
+                </div>
+                <div className="text-right text-sm font-black text-slate-900">
+                  BDT {formatMoney(item.price)} × {item.qty}
+                  <p className="text-xs text-blue-600">
+                    BDT {formatMoney(item.price * item.qty)}
+                  </p>
+                </div>
               </div>
-              <div className="text-right text-sm font-black text-slate-900">
-                BDT {formatMoney(price)} × 1
-                <p className="text-xs text-blue-600">
-                  BDT {formatMoney(price)}
-                </p>
-              </div>
-            </div>
+            ))}
 
             <div className="mt-5 space-y-3 border-t border-slate-200 pt-5 text-sm">
               <InfoRow
@@ -2535,7 +2594,7 @@ function OrderFormBlock({ data, compact }) {
               type="button"
               onClick={onPlaceOrder}
               disabled={placingOrder}
-              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-500 px-4 py-3 text-sm font-black text-white shadow-sm transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-500 px-4 py-3 text-sm font-black text-gray-900 shadow-sm transition hover:bg-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Lock size={14} />
               {placingOrder ? "Placing..." : "Place Order"}

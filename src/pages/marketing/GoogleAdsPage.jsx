@@ -28,7 +28,7 @@ export default function GoogleAdsPage({ onCreate, onEdit }) {
     <div className="flex-1 overflow-y-auto p-4">
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-lg font-bold text-gray-800">Google Ads Manage</h1>
-        <button onClick={onCreate} className="inline-flex items-center gap-1 rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">
+        <button onClick={onCreate} className="inline-flex items-center gap-1 rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900">
           <Plus size={16} /> Create
         </button>
       </div>
@@ -52,7 +52,7 @@ export default function GoogleAdsPage({ onCreate, onEdit }) {
                 </td>
                 <td className="p-3"><span className="rounded bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">{item.status}</span></td>
                 <td className="p-3">
-                  <button onClick={() => onEdit(item)} className="mr-2 rounded bg-indigo-600 p-2 text-white"><Edit2 size={14} /></button>
+                  <button onClick={() => onEdit(item)} className="mr-2 rounded bg-indigo-600 p-2 text-gray-900"><Edit2 size={14} /></button>
                   <button onClick={() => remove(item.Id)} className="rounded bg-rose-500 p-2 text-white"><Trash2 size={14} /></button>
                 </td>
               </tr>

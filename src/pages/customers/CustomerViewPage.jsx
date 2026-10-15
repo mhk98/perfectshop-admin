@@ -51,7 +51,7 @@ export default function CustomerViewPage({ customer, onNavigate, onLoginAs }) {
             <PlayCircle size={14} />
             টিউটোরিয়াল দেখুন
           </button>
-          <button type="button" onClick={() => onNavigate && onNavigate('customer_list')} className="rounded-full bg-indigo-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-indigo-700">
+          <button type="button" onClick={() => onNavigate && onNavigate('customer_list')} className="rounded-full bg-indigo-600 px-4 py-2 text-xs font-semibold text-gray-900 transition hover:bg-indigo-700">
             Customer List
           </button>
           <button type="button" onClick={() => onLoginAs && onLoginAs(customer)} className="inline-flex items-center gap-1.5 rounded-full bg-sky-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-sky-600">
@@ -71,7 +71,7 @@ export default function CustomerViewPage({ customer, onNavigate, onLoginAs }) {
               {customer?.customerName || '—'}
             </h2>
             <div className="mt-1 flex items-center gap-1">
-              <a href={phone ? `tel:${phone}` : undefined} className="inline-flex items-center gap-1 rounded bg-teal-500 px-3 py-1 text-xs font-semibold text-white">
+              <a href={phone ? `tel:${phone}` : undefined} className="inline-flex items-center gap-1 rounded bg-teal-500 px-3 py-1 text-xs font-semibold text-gray-900">
                 <Phone size={12} />
                 Call
               </a>
@@ -94,7 +94,7 @@ export default function CustomerViewPage({ customer, onNavigate, onLoginAs }) {
         </section>
 
         <section className="rounded bg-white p-6 shadow-sm">
-          <div className="mb-5 rounded bg-indigo-600 py-2 text-center text-sm font-bold text-white">
+          <div className="mb-5 rounded bg-indigo-600 py-2 text-center text-sm font-bold text-gray-900">
             Order
           </div>
           <div className="overflow-x-auto">

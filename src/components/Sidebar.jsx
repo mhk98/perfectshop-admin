@@ -368,7 +368,11 @@ export default function Sidebar({ activePage, onNavigate, activeOrderStatus, onO
       className={`fixed inset-y-0 left-0 z-40 flex w-56 min-h-screen flex-shrink-0 flex-col overflow-y-auto transition-transform duration-200 md:static md:z-auto md:translate-x-0 ${
         mobileOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
+<<<<<<< HEAD
       style={{ background: 'linear-gradient(180deg, #0A0A0A 0%, #111111 52%, #1F1F1E 100%)' }}
+=======
+      style={{ background: 'linear-gradient(180deg, #0A0A0A 0%, #141413 52%, #2B2B29 100%)' }}
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
     >
       {/* Logo */}
       <div className="flex items-center gap-2 px-4 py-4 border-b border-blue-800/70 flex-shrink-0">

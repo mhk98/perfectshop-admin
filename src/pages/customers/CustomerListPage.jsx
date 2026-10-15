@@ -103,7 +103,7 @@ export default function CustomerListPage({ onViewCustomer, onEditCustomer }) {
                   <td className="px-4 py-3 text-gray-500">{[o.customerArea, o.customerDistrict].filter(Boolean).join(', ')}</td>
                   <td className="px-4 py-3">
                     <span className={`px-2.5 py-1 rounded text-[10px] font-semibold ${
-                      o.status === 'Delivered'  ? 'bg-teal-100 text-teal-700'    :
+                      o.status === 'Delivered'  ? 'bg-teal-100 text-teal-800'    :
                       o.status === 'Cancelled'  ? 'bg-orange-100 text-orange-700' :
                       o.status === 'Returned'   ? 'bg-red-100 text-red-600'      :
                       o.status === 'Confirmed'  ? 'bg-blue-100 text-blue-700'    :

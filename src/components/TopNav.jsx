@@ -339,17 +339,29 @@ export default function TopNav({
             }
           />
           <NavBtn
+<<<<<<< HEAD
             color="bg-[#111111]"
+=======
+            color="bg-[#141413]"
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
             label="Landing Page"
             onClick={() => onQuickNavigate?.("landing")}
           />
           <NavBtn
+<<<<<<< HEAD
             color="bg-[#F0B000]"
+=======
+            color="bg-[#E09A00]"
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
             label="Visitors"
             onClick={() => onQuickNavigate?.("visitors")}
           />
           <NavBtn
+<<<<<<< HEAD
             color="bg-[#2B2B29]"
+=======
+            color="bg-[#3D3D3A]"
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
             label="POS"
             onClick={() => onQuickNavigate?.("pos")}
           />
@@ -359,7 +371,11 @@ export default function TopNav({
             onClick={() => onQuickNavigate?.("expense")}
           />
           <NavBtn
+<<<<<<< HEAD
             color="bg-[#2B2B29]"
+=======
+            color="bg-[#3D3D3A]"
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
             label="Full Tutorial"
             onClick={() =>
               TUTORIAL_URL
@@ -523,7 +539,11 @@ export default function TopNav({
             onClick={() => setDropdownOpen((v) => !v)}
             className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-gray-100 transition"
           >
+<<<<<<< HEAD
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#111111] via-[#FFC107] to-[#FFD54F] flex items-center justify-center shrink-0">
+=======
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#141413] via-[#FFC107] to-[#FFD84D] flex items-center justify-center shrink-0">
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
               {user?.image ? (
                 <img
                   src={assetUrl(user.image)}
@@ -591,7 +611,7 @@ function NavBtn({ color, label, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`${color} text-white text-xs font-medium px-3 py-1.5 rounded-full hover:opacity-90 transition`}
+      className={`${color} ${color.includes("#FFC107") || color.includes("#E09A00") ? "text-gray-900" : "text-white"} text-xs font-medium px-3 py-1.5 rounded-full hover:opacity-90 transition`}
     >
       {label}
     </button>

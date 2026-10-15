@@ -29,7 +29,7 @@ export default function AdminPermissionEditPage({ permission, onSave, onNavigate
           <button
             type="button"
             onClick={() => onNavigate && onNavigate('admin_permissions')}
-            className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition"
+            className="bg-indigo-500 hover:bg-indigo-600 text-gray-900 text-sm font-semibold px-5 py-2 rounded-lg transition"
           >
             Manage
           </button>
@@ -54,7 +54,7 @@ export default function AdminPermissionEditPage({ permission, onSave, onNavigate
         <div>
           <button
             type="submit"
-            className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition"
+            className="bg-teal-500 hover:bg-teal-600 text-gray-900 text-sm font-semibold px-6 py-2.5 rounded-lg transition"
           >
             Submit
           </button>

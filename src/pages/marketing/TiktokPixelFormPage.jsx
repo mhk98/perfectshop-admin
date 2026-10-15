@@ -38,7 +38,7 @@ export default function TiktokPixelFormPage({ mode = 'create', pixel, onSave, on
     <div className="flex-1 overflow-y-auto bg-gray-100 p-6">
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-lg font-bold text-gray-800">TikTok Pixel {isEdit ? 'Edit' : 'Create'}</h1>
-        <button onClick={() => onNavigate('tiktok_pixels')} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">Manage</button>
+        <button onClick={() => onNavigate('tiktok_pixels')} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900">Manage</button>
       </div>
       <form onSubmit={submit} className="mx-auto max-w-5xl rounded bg-white p-6 shadow-sm">
         {error && <div className="mb-4 rounded border border-red-200 bg-red-50 px-4 py-2 text-xs text-red-600">{error}</div>}
@@ -60,7 +60,7 @@ export default function TiktokPixelFormPage({ mode = 'create', pixel, onSave, on
             <span className={`inline-block h-6 w-6 rounded-full bg-white shadow transition ${form.status === 'Active' ? 'translate-x-7' : 'translate-x-1'}`} />
           </button>
         </label>
-        <button disabled={saving} className="rounded bg-teal-500 px-5 py-2 text-sm font-semibold text-white disabled:opacity-50">{saving ? 'Saving...' : 'Submit'}</button>
+        <button disabled={saving} className="rounded bg-teal-500 px-5 py-2 text-sm font-semibold text-gray-900 disabled:opacity-50">{saving ? 'Saving...' : 'Submit'}</button>
       </form>
     </div>
   );

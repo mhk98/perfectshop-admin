@@ -112,7 +112,7 @@ export default function CustomerIpBlockPage() {
               className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400 resize-none" />
           </div>
           <button type="submit" disabled={submitting}
-            className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition">
+            className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-gray-900 text-sm font-semibold px-6 py-2.5 rounded-lg transition">
             {submitting ? 'Saving...' : 'Submit'}
           </button>
         </form>
@@ -190,7 +190,7 @@ export default function CustomerIpBlockPage() {
           <span className="text-xs text-gray-500">Total {meta?.count ?? blocks.length} entries</span>
           <div className="flex gap-1">
             <PagBtn onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} label="‹" />
-            <button className="w-7 h-7 rounded bg-indigo-500 text-white text-xs font-bold flex items-center justify-center">{page}</button>
+            <button className="w-7 h-7 rounded bg-indigo-500 text-gray-900 text-xs font-bold flex items-center justify-center">{page}</button>
             <PagBtn onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages} label="›" />
           </div>
         </div>
@@ -220,7 +220,7 @@ export default function CustomerIpBlockPage() {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400 resize-none" />
               </div>
               <button type="submit"
-                className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition">
+                className="bg-teal-500 hover:bg-teal-600 text-gray-900 text-sm font-semibold px-6 py-2.5 rounded-lg transition">
                 Update
               </button>
             </form>

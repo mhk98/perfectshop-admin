@@ -60,7 +60,7 @@ export default function AttributeFormPage({ attribute, mode = 'create', onNaviga
           <button
             type="button"
             onClick={() => onNavigate && onNavigate('attribute')}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-5 py-2 rounded-full transition"
+            className="bg-indigo-600 hover:bg-indigo-700 text-gray-900 text-xs font-semibold px-5 py-2 rounded-full transition"
           >
             Manage
           </button>

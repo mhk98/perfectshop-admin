@@ -38,7 +38,7 @@ export default function ExpenseFormPage({ mode = 'create', expense, categories, 
           <button type="button" className="inline-flex items-center gap-1.5 rounded-full bg-rose-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose-600">
             ▶ টিউটোরিয়াল দেখুন
           </button>
-          <button type="button" onClick={() => onNavigate('expense')} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700">
+          <button type="button" onClick={() => onNavigate('expense')} className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-indigo-700">
             Manage
           </button>
         </div>
@@ -102,7 +102,7 @@ export default function ExpenseFormPage({ mode = 'create', expense, categories, 
             </button>
           </label>
 
-          <button type="submit" className="rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-600">
+          <button type="submit" className="rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-teal-600">
             Submit
           </button>
         </form>

@@ -84,7 +84,7 @@ export default function AdminRolesPage({ onEditRole }) {
                   <td className="px-4 py-3 text-gray-500">{i + 1}</td>
                   <td className="px-4 py-3 font-medium text-gray-800 capitalize">{role.role}</td>
                   <td className="px-4 py-3">
-                    <span className="px-2.5 py-1 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">
+                    <span className="px-2.5 py-1 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-800">
                       {(role.menuPermissions || []).length} permissions
                     </span>
                   </td>

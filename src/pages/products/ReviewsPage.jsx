@@ -54,7 +54,7 @@ export default function ReviewsPage({ onNavigate, onEditReview }) {
           <button
             type="button"
             onClick={() => onNavigate && onNavigate('create_review')}
-            className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition"
+            className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-gray-900 text-xs font-semibold px-4 py-2 rounded-full transition"
           >
             <Plus size={14} />
             Create
@@ -124,7 +124,7 @@ export default function ReviewsPage({ onNavigate, onEditReview }) {
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-1">
-                        <button onClick={() => onEditReview && onEditReview(review)} className="flex h-7 w-8 items-center justify-center rounded bg-indigo-600 hover:bg-indigo-700 text-white transition">
+                        <button onClick={() => onEditReview && onEditReview(review)} className="flex h-7 w-8 items-center justify-center rounded bg-indigo-600 hover:bg-indigo-700 text-gray-900 transition">
                           <Edit2 size={12} />
                         </button>
                         <button onClick={() => handleDelete(review.Id)} className="flex h-7 w-8 items-center justify-center rounded bg-red-500 hover:bg-red-600 text-white transition">
@@ -161,7 +161,7 @@ function StatusBadge({ status }) {
   const isApproved = status === 'approved';
   const isPending = status === 'pending';
   return (
-    <span className={`inline-flex rounded px-1.5 py-0.5 text-[10px] font-bold ${isApproved ? 'bg-teal-100 text-teal-600' : isPending ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-600'}`}>
+    <span className={`inline-flex rounded px-1.5 py-0.5 text-[10px] font-bold ${isApproved ? 'bg-teal-100 text-teal-800' : isPending ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-600'}`}>
       {status}
     </span>
   );

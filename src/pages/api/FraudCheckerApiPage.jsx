@@ -70,7 +70,7 @@ export default function FraudCheckerApiPage() {
           </Section>
 
           <div>
-            <h2 className="mb-6 text-sm font-bold text-indigo-600">Pathao</h2>
+            <h2 className="mb-6 text-sm font-bold text-indigo-800">Pathao</h2>
             <Field label="Bearer Token">
               <textarea value={form.pathaoBearerToken || ''} onChange={(e) => setField('pathaoBearerToken', e.target.value)} rows={4}
                 className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-600 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
@@ -78,10 +78,10 @@ export default function FraudCheckerApiPage() {
           </div>
 
           <button type="submit" disabled={saving}
-            className="rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-600 disabled:opacity-50">
+            className="rounded bg-teal-500 px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-teal-600 disabled:opacity-50">
             {saving ? 'Saving...' : 'Update'}
           </button>
-          <button type="button" onClick={handleTest} disabled={testing} className="ml-2 rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">{testing ? 'Testing...' : 'Test Configuration'}</button>
+          <button type="button" onClick={handleTest} disabled={testing} className="ml-2 rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-gray-900 disabled:opacity-50">{testing ? 'Testing...' : 'Test Configuration'}</button>
         </form>
       </div>
     </div>
@@ -89,7 +89,7 @@ export default function FraudCheckerApiPage() {
 }
 
 function Section({ title, children }) {
-  return <section><h2 className="mb-6 text-sm font-bold text-indigo-600">{title}</h2><div className="grid gap-6 lg:grid-cols-2">{children}</div></section>;
+  return <section><h2 className="mb-6 text-sm font-bold text-indigo-800">{title}</h2><div className="grid gap-6 lg:grid-cols-2">{children}</div></section>;
 }
 function Field({ label, children }) {
   return <label className="block"><span className="mb-2 block text-sm font-semibold text-gray-500">{label}</span>{children}</label>;

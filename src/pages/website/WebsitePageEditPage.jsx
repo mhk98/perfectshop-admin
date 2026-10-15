@@ -87,7 +87,7 @@ export default function WebsitePageEditPage({ page, onSave, onNavigate }) {
             ▶ টিউটোরিয়াল দেখুন
           </button>
           <button type="button" onClick={() => onNavigate && onNavigate('create_page')}
-            className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition">
+            className="bg-indigo-500 hover:bg-indigo-600 text-gray-900 text-sm font-semibold px-5 py-2 rounded-lg transition">
             Manage
           </button>
         </div>
@@ -124,7 +124,7 @@ export default function WebsitePageEditPage({ page, onSave, onNavigate }) {
 
           <div>
             <button type="submit" disabled={saving}
-              className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition">
+              className="bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-gray-900 text-sm font-semibold px-6 py-2.5 rounded-lg transition">
               {saving ? 'Saving...' : 'Submit'}
             </button>
           </div>

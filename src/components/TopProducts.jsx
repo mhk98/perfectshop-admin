@@ -7,14 +7,18 @@ export default function TopProducts({ topProducts = [], loading, onViewAll }) {
     <div className="bg-white rounded-xl shadow overflow-hidden">
       <div
         className="flex items-center justify-between px-4 py-3"
+<<<<<<< HEAD
         style={{ background: "linear-gradient(90deg, #111111, #2B2B29)" }}
+=======
+        style={{ background: "linear-gradient(90deg, #141413, #3D3D3A)" }}
+>>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
       >
         <span className="text-white font-semibold text-sm">
           Top Selling Products
         </span>
         <button
           onClick={onViewAll}
-          className="bg-teal-400 hover:bg-teal-500 text-white text-xs font-medium px-3 py-1 rounded-full transition"
+          className="bg-teal-400 hover:bg-teal-500 text-gray-900 text-xs font-medium px-3 py-1 rounded-full transition"
         >
           View All
         </button>
