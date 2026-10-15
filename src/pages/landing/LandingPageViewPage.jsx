@@ -1,3 +1,4 @@
+import { useCheckoutSession } from "../../utils/useCheckoutSession";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
@@ -26,10 +27,19 @@ import {
 } from "../../services/websiteService";
 import { imageUrl } from "../../utils/assetUrl";
 
-const SHIPPING_OPTIONS = [
-  { id: "inside", label: "Inside Dhaka", charge: 80 },
-  { id: "outside", label: "Outside Dhaka", charge: 130 },
-];
+// Same rules as the storefront landing page and the order API (regularData.deliveryInside/Outside):
+// at least 80/130, and free when every selected product ships free.
+function getShippingOptions(campaign, freeShipping = false) {
+  const regularData = parseObject(campaign?.regularData);
+  return [
+    { id: "inside", label: "Inside Dhaka", banglaLabel: "ঢাকার ভিতরে", charge: Math.max(toNumber(regularData.deliveryInside, 0), 80) },
+    { id: "outside", label: "Outside Dhaka", banglaLabel: "ঢাকার বাইরে", charge: Math.max(toNumber(regularData.deliveryOutside, 0), 130) },
+  ].map((option) =>
+    freeShipping
+      ? { ...option, label: `${option.label} (Free Delivery)`, charge: 0, free: true }
+      : option,
+  );
+}
 
 const DEVICE_ID_KEY = "holydeen_device_id";
 
@@ -165,6 +175,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const [showTrackOrder, setShowTrackOrder] = useState(false);
   const [footerSettings, setFooterSettings] = useState(null);
   const [footerPages, setFooterPages] = useState([]);
+  const checkout = useCheckoutSession();
   const incompleteOrderIdRef = useRef(null);
   const incompletePhoneRef = useRef("");
   const leadTrackedOrderIdRef = useRef(null);
@@ -179,22 +190,38 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const regularPage = isRegularLandingPage(campaign);
   const price = toNumber(campaign?.price, regularPage ? 4100 : 699);
   const originalPrice = toNumber(campaign?.originalPrice, regularPage ? 5600 : 1500);
-  const phone = "01355945078";
+  const phone =
+    String(campaign?.phone || "").trim() ||
+    footerSettings?.header?.supportPhone ||
+    footerSettings?.footer?.supportPhone ||
+    footerSettings?.contact?.hotlineNumber ||
+    footerSettings?.contact?.phoneNumber ||
+    footerSettings?.contact?.phone ||
+    "";
   const shortDescription = stripHtml(campaign?.shortDescription || "");
   const descriptionTitle =
     campaign?.descriptionTitle || "এই ক্যাম্পেইনের বিশেষ অফার";
   const bannerImage = campaign?.bannerImageUrl || heroImage;
   const prizeImageSource = campaign?.prizeImageUrl || "";
   const reviewImages = parseImages(campaign?.reviewImages);
+  // The public landing API sends free-shipping product ids; the admin preview loads them separately.
+  const [fetchedFreeShippingIds, setFetchedFreeShippingIds] = useState(null);
+  const freeShippingIds = campaign?.freeShippingProductIds ?? fetchedFreeShippingIds;
   const productOptions = useMemo(
-    () => getLandingProductOptions(campaign, { productName, price, originalPrice, bannerImage }),
-    [campaign, productName, price, originalPrice, bannerImage],
+    () => getLandingProductOptions(campaign, { productName, price, originalPrice, bannerImage }, freeShippingIds),
+    [campaign, productName, price, originalPrice, bannerImage, freeShippingIds],
   );
   const [selectedProducts, setSelectedProducts] = useState(() =>
     initializeSelectedProducts(productOptions),
   );
+  const allFreeShipping =
+    selectedProducts.length > 0 && selectedProducts.every((item) => item.freeShipping);
+  const shippingOptions = useMemo(
+    () => getShippingOptions(campaign, allFreeShipping),
+    [campaign, allFreeShipping],
+  );
   const deliveryCharge =
-    SHIPPING_OPTIONS.find((option) => option.id === form.shipping)?.charge || 0;
+    shippingOptions.find((option) => option.id === form.shipping)?.charge || 0;
   const productSubtotal = selectedProducts.reduce(
     (sum, item) => sum + item.price * item.qty,
     0,
@@ -204,6 +231,20 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   useEffect(() => {
     setSelectedProducts(initializeSelectedProducts(productOptions));
   }, [productOptions]);
+
+  useEffect(() => {
+    if (!campaign?.Id || Array.isArray(campaign.freeShippingProductIds)) return undefined;
+    let active = true;
+    landingPageService
+      .getPublicOne(campaign.Id)
+      .then((res) => {
+        if (active) setFetchedFreeShippingIds(res.data?.freeShippingProductIds || []);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [campaign?.Id, campaign?.freeShippingProductIds]);
 
   useEffect(() => {
     let active = true;
@@ -341,54 +382,43 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       : initializeSelectedProducts(productOptions);
   }
 
-  function buildLandingOrderPayload({ status = "pending", phoneNumber } = {}) {
+  function buildLandingOrderPayload({ phoneNumber } = {}) {
     const selectedItems = getSelectedOrderItems();
-    const shippingLabel =
-      SHIPPING_OPTIONS.find((option) => option.id === form.shipping)?.label ||
-      "Inside Dhaka";
-    const today = new Date().toISOString().slice(0, 10);
-    const productSummary = selectedItems.map((item) => `${item.name} x${item.qty}`).join(", ");
-    const orderItems = selectedItems.map((item) => ({
-      productId: item.productId || item.id,
-      name: item.name,
-      qty: item.qty,
-      price: item.price,
-      total: item.price * item.qty,
-      image: item.image || "",
-    }));
     const normalizedPhone = phoneNumber || normalizeBangladeshPhone(form.phone) || form.phone.trim();
     const incompleteOrderId =
       incompletePhoneRef.current === normalizedPhone ? incompleteOrderIdRef.current : null;
-
     const tracking = getTrackingClickData();
 
+    // Prices and delivery charge are recalculated by the order API from this landing page.
     return {
+      checkoutKey: checkout.getKey(normalizedPhone),
       ...(incompleteOrderId ? { incompleteOrderId } : {}),
       deviceId: getLandingDeviceId(),
-      customerName: form.name.trim(),
+      source: "Landing Page",
+      orderSource: "Landing Page",
+      customerName: form.name.trim() || "Landing Customer",
       customerPhone: normalizedPhone,
       customerAddress: form.address.trim(),
-      customerArea: shippingLabel,
-      customerDistrict: "",
-      productName: productSummary || productName,
-      productImage: selectedItems[0]?.image || "",
-      quantity: selectedItems.reduce((sum, item) => sum + item.qty, 0),
-      totalBill: total,
+      customerDistrict: form.shipping === "outside" ? "outside" : "inside",
+      paymentMethod: "cod",
+      items: selectedItems.map((item) => ({
+        id: Number(item.productId) || Number(campaign?.Id) || 0,
+        name: item.name,
+        image: item.image || "",
+        price: item.price,
+        qty: item.qty,
+      })),
+      subtotal: productSubtotal,
+      deliveryCharge,
+      discount: 0,
       advance: 0,
-      courier: "",
-      status,
-      note: JSON.stringify({
+      total,
+      tracking: {
+        ...(tracking || {}),
+        source: "Landing Page",
+        landingPageId: campaign?.Id,
         landingPage: title,
-        customerAddress: form.address.trim(),
-        paymentMethod: "cod",
-        items: orderItems,
-        subtotal: productSubtotal,
-        deliveryCharge,
-        total,
-        tracking,
-      }),
-      tracking,
-      orderDate: today,
+      },
     };
   }
 
@@ -404,9 +434,10 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     }
 
     const timer = window.setTimeout(async () => {
+      if (checkout.submitting.current) return;
       try {
         const response = await orderService.saveIncompleteOrder(
-          buildLandingOrderPayload({ status: "incomplete", phoneNumber: normalizedPhone }),
+          buildLandingOrderPayload({ phoneNumber: normalizedPhone }),
         );
         const draft = response?.data || response || {};
         const draftId = draft.Id || draft.id;
@@ -450,7 +481,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   ]);
 
   async function handlePlaceOrder() {
-    if (placingOrder || placedOrder) return;
+    if (checkout.submitting.current || placingOrder || placedOrder) return;
     startCheckout();
     setOrderError("");
     const normalizedPhone = normalizeBangladeshPhone(form.phone);
@@ -471,6 +502,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       return;
     }
 
+    checkout.submitting.current = true;
     setPlacingOrder(true);
     const selectedItems = getSelectedOrderItems();
     const contentId = String(selectedItems[0]?.productId || campaign?.productId || campaign?.Id || "");
@@ -500,6 +532,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       const response = await orderService.createOrder(payload);
       const placedOrderData = response.data || payload;
       setPlacedOrder(placedOrderData);
+      checkout.complete();
       incompleteOrderIdRef.current = null;
       incompletePhoneRef.current = "";
       leadTrackedOrderIdRef.current = null;
@@ -518,6 +551,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
+      checkout.submitting.current = false;
       setOrderError(err.message || "Order create failed. Please try again.");
     } finally {
       setPlacingOrder(false);
@@ -547,6 +581,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     prizeImageSource,
     reviewImages,
     deliveryCharge,
+    shippingOptions,
     productOptions,
     selectedProducts,
     productSubtotal,
@@ -570,8 +605,8 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
         productName={productName}
         productImage={bannerImage}
         price={price}
-        deliveryCharge={deliveryCharge}
-        total={total}
+        deliveryCharge={placedOrder.deliveryCharge ?? deliveryCharge}
+        total={placedOrder.total ?? total}
         phoneNumber={phone}
         onContinue={() => setPlacedOrder(null)}
         onTrack={() => {
@@ -811,7 +846,7 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
                   icon={<Truck size={15} />}
                 >
                   <div className="grid gap-3 md:grid-cols-2">
-                    {SHIPPING_OPTIONS.map((option) => (
+                    {shippingOptions.map((option) => (
                       <RadioOption
                         key={option.id}
                         selected={form.shipping === option.id}
@@ -1182,14 +1217,12 @@ function RegularLandingTemplate({ data, campaign }) {
     productName,
     title,
     subTitle,
-    price,
-    // eslint-disable-next-line no-unused-vars -- used by the hidden price offer section
-    originalPrice,
     phone,
     shortDescription,
     descriptionTitle,
     bannerImage,
     deliveryCharge,
+    shippingOptions,
     productOptions,
     selectedProducts,
     productSubtotal,
@@ -1223,7 +1256,11 @@ function RegularLandingTemplate({ data, campaign }) {
   const reviewRegularPriceLabel = regularData.reviewRegularPriceLabel || "";
   const reviewOfferPriceLabel = regularData.reviewOfferPriceLabel || "";
   const reviewButtonText = regularData.reviewButtonText || "";
-  // eslint-disable-next-line no-unused-vars -- used by the hidden price offer section
+  // Page-level prices win; otherwise show the first checkout product's prices.
+  const reviewOfferPrice =
+    toNumber(campaign?.price, 0) || toNumber(productOptions[0]?.price, 0);
+  const reviewRegularPrice =
+    toNumber(campaign?.originalPrice, 0) || toNumber(productOptions[0]?.originalPrice, 0);
   const hasReviewSectionContent = Boolean(
     reviewHeading ||
     reviewSubHeading ||
@@ -1290,7 +1327,6 @@ function RegularLandingTemplate({ data, campaign }) {
         </section>
       )}
 
-      {/* Price offer section hidden for now
       {hasReviewSectionContent && (
         <section className="px-4 py-14 text-center" style={{ backgroundColor: colors.sectionBgColor }}>
           {reviewHeading && (
@@ -1303,14 +1339,14 @@ function RegularLandingTemplate({ data, campaign }) {
               {reviewSubHeading}
             </p>
           )}
-          {reviewRegularPriceLabel && (
+          {reviewRegularPriceLabel && reviewRegularPrice > 0 && (
             <p className="mt-12 text-2xl font-black text-slate-600">
-              {reviewRegularPriceLabel} <span className="line-through">{formatMoney(originalPrice)}/- টাকা</span>
+              {reviewRegularPriceLabel} <span className="line-through">{formatMoney(reviewRegularPrice)}/- টাকা</span>
             </p>
           )}
-          {reviewOfferPriceLabel && (
+          {reviewOfferPriceLabel && reviewOfferPrice > 0 && (
             <p className="mt-5 text-3xl font-black md:text-5xl" style={{ color: colors.headingColor }}>
-              {reviewOfferPriceLabel} <span className="text-green-600">{formatMoney(price)}/- টাকা</span>
+              {reviewOfferPriceLabel} <span className="text-green-600">{formatMoney(reviewOfferPrice)}/- টাকা</span>
             </p>
           )}
           {reviewButtonText && (
@@ -1320,7 +1356,6 @@ function RegularLandingTemplate({ data, campaign }) {
           )}
         </section>
       )}
-      */}
 
       <section className="px-4 py-16 text-center">
         <div className="mx-auto max-w-5xl">
@@ -1383,14 +1418,16 @@ function RegularLandingTemplate({ data, campaign }) {
               <p>✅ ১০০% অরিজিনাল পণ্য ✅ দ্রুত ডেলিভারি ✅ ক্যাশ অন ডেলিভারি সুবিধা ✅ সহজ অর্ডার প্রক্রিয়া</p>
             )}
           </div>
-          <a
-            href={`tel:${String(phone).replace(/\s+/g, "")}`}
-            onClick={() => trackLandingContactClick("Landing phone", phone)}
-            className="mt-12 inline-flex items-center justify-center rounded-full border-4 border-white px-8 py-3 text-xl font-black shadow"
-            style={{ backgroundColor: colors.buttonColor, color: colors.buttonTextColor }}
-          >
-            📞 {phone}
-          </a>
+          {phone ? (
+            <a
+              href={`tel:${String(phone).replace(/\s+/g, "")}`}
+              onClick={() => trackLandingContactClick("Landing phone", phone)}
+              className="mt-12 inline-flex items-center justify-center rounded-full border-4 border-white px-8 py-3 text-xl font-black shadow"
+              style={{ backgroundColor: colors.buttonColor, color: colors.buttonTextColor }}
+            >
+              📞 {phone}
+            </a>
+          ) : null}
         </div>
       </section>
 
@@ -1416,7 +1453,7 @@ function RegularLandingTemplate({ data, campaign }) {
               <RegularOrderInput icon={<Phone size={18} />} placeholder="মোবাইল নাম্বার দিন" value={form.phone} onChange={(value) => set("phone", value)} />
               <RegularOrderInput icon={<Package size={18} />} placeholder="আপনার সম্পূর্ণ ঠিকানা" value={form.address} onChange={(value) => set("address", value)} />
               <div className="mt-4 overflow-hidden rounded border border-slate-200">
-                {SHIPPING_OPTIONS.map((option) => (
+                {shippingOptions.map((option) => (
                   <button
                     key={option.id}
                     type="button"
@@ -1424,7 +1461,7 @@ function RegularLandingTemplate({ data, campaign }) {
                     className="flex w-full items-center gap-3 border-b border-slate-200 px-4 py-3 text-left text-sm last:border-b-0"
                   >
                     <span className={`h-5 w-5 rounded-full border ${form.shipping === option.id ? "border-green-600 bg-green-600" : "border-slate-300"}`} />
-                    {option.label === "Inside Dhaka" ? "ঢাকার ভিতরে ৮০ টাকা" : option.label === "Outside Dhaka" ? "ঢাকার বাইরে ১৩০ টাকা" : `${option.label} ${option.charge} টাকা`}
+                    {`${option.banglaLabel} ${option.free ? "ফ্রি ডেলিভারি" : `${option.charge} টাকা`}`}
                   </button>
                 ))}
               </div>
@@ -2339,6 +2376,7 @@ function OrderFormBlock({ data, compact }) {
     price,
     bannerImage,
     deliveryCharge,
+    shippingOptions,
     total,
     placingOrder,
     orderError,
@@ -2395,7 +2433,7 @@ function OrderFormBlock({ data, compact }) {
             <div
               className={compact ? "grid gap-3" : "grid gap-3 md:grid-cols-2"}
             >
-              {SHIPPING_OPTIONS.map((option) => (
+              {shippingOptions.map((option) => (
                 <RadioOption
                   key={option.id}
                   selected={form.shipping === option.id}
@@ -3225,8 +3263,12 @@ function getProductName(campaign) {
   );
 }
 
-function getLandingProductOptions(campaign, fallback) {
+function getLandingProductOptions(campaign, fallback, freeShippingIds) {
   const regularData = parseObject(campaign?.regularData);
+  // Same linked product the order API checks for free shipping.
+  const freeIds = new Set((freeShippingIds || []).map(Number));
+  const isFreeShipping = (linkedId) =>
+    freeIds.has(Number(linkedId || campaign?.productId || 0));
   const configured = Array.isArray(regularData.productOptions)
     ? regularData.productOptions
     : [];
@@ -3238,6 +3280,7 @@ function getLandingProductOptions(campaign, fallback) {
       price: toNumber(item.price, fallback.price),
       originalPrice: toNumber(item.originalPrice, fallback.originalPrice),
       image: imageUrl(item.image) || fallback.bannerImage || heroImage,
+      freeShipping: isFreeShipping(item.productId),
     }))
     .filter((item) => item.id && item.name && item.price > 0);
 
@@ -3251,6 +3294,7 @@ function getLandingProductOptions(campaign, fallback) {
       price: fallback.price,
       originalPrice: fallback.originalPrice,
       image: fallback.bannerImage || heroImage,
+      freeShipping: isFreeShipping(campaign?.productId),
     },
   ];
 }

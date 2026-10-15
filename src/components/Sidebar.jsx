@@ -368,7 +368,7 @@ export default function Sidebar({ activePage, onNavigate, activeOrderStatus, onO
       className={`fixed inset-y-0 left-0 z-40 flex w-56 min-h-screen flex-shrink-0 flex-col overflow-y-auto transition-transform duration-200 md:static md:z-auto md:translate-x-0 ${
         mobileOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
-      style={{ background: 'linear-gradient(180deg, #000000 0%, #0A0A0A 52%, #262626 100%)' }}
+      style={{ background: 'linear-gradient(180deg, #0A0A0A 0%, #111111 52%, #1F1F1E 100%)' }}
     >
       {/* Logo */}
       <div className="flex items-center gap-2 px-4 py-4 border-b border-blue-800/70 flex-shrink-0">
@@ -718,11 +718,11 @@ function ExpandableItem({ icon: Icon, label, isOpen, isActive, badge, onClick, c
       <div
         onClick={onClick}
         className={`flex items-center justify-between px-4 py-2.5 cursor-pointer group transition-all duration-150 ${
-          isActive ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-inner' : 'text-blue-100 hover:bg-white/10 hover:text-white'
+          isActive ? 'bg-gradient-to-r from-indigo-500 to-indigo-400 text-gray-900 font-semibold shadow-inner' : 'text-blue-100 hover:bg-white/10 hover:text-white'
         }`}
       >
         <div className="flex items-center gap-3">
-          <Icon size={16} className={isActive ? 'text-orange-200' : 'text-blue-200 group-hover:text-orange-200'} />
+          <Icon size={16} className={isActive ? 'text-gray-900' : 'text-blue-200 group-hover:text-indigo-400'} />
           <span className="text-sm font-medium">{label}</span>
         </div>
         <div className="flex items-center gap-1">
@@ -746,15 +746,15 @@ function SubItem({ icon: Icon, label, color, badge, isActive, onClick }) {
     <div
       onClick={onClick}
       className={`flex items-center justify-between px-3 py-2 cursor-pointer transition-all duration-100 ${
-        isActive ? 'bg-blue-600 text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white'
+        isActive ? 'bg-indigo-500 text-gray-900' : 'text-blue-100 hover:bg-white/10 hover:text-white'
       }`}
     >
       <div className="flex items-center gap-2">
-        <Icon size={13} className={isActive ? 'text-white' : color} />
+        <Icon size={13} className={isActive ? 'text-gray-900' : color} />
         <span className="text-xs">{label}</span>
       </div>
       {badge !== undefined && (
-        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-blue-800/80 text-blue-100'}`}>
+        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? 'bg-black/15 text-gray-900' : 'bg-blue-800/80 text-blue-100'}`}>
           {badge}
         </span>
       )}
@@ -767,7 +767,7 @@ function SidebarItem({ icon: Icon, label, active, hasChild, onClick }) {
     <div
       onClick={onClick}
       className={`flex items-center justify-between px-4 py-2.5 cursor-pointer group transition-all duration-150 ${
-        active ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-inner' : 'text-blue-100 hover:bg-white/10 hover:text-white'
+        active ? 'bg-gradient-to-r from-indigo-500 to-indigo-400 text-gray-900 font-semibold shadow-inner' : 'text-blue-100 hover:bg-white/10 hover:text-white'
       }`}
     >
       <div className="flex items-center gap-3">

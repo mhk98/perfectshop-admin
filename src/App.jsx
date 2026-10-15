@@ -102,6 +102,7 @@ import ExpenseFormPage from "./pages/expense/ExpenseFormPage";
 import ReportsPage from "./pages/reports/ReportsPage";
 import { expenseService } from "./services/reportService";
 import { orderService } from "./services/orderService";
+import { productService } from "./services/productService";
 import { siteSettingService } from "./services/websiteService";
 import {
   applyDocumentFavicon,
@@ -232,7 +233,6 @@ const TRANSIENT_SUBPAGE_FALLBACKS = {
     expense_edit: "expense",
   },
 };
-
 
 const PRODUCT_CREATE_ROUTES = {
   create_product: "/products/create",
@@ -458,17 +458,25 @@ function getNavigationStateFromPath(pathname) {
   const path = normalizeRoutePath(pathname);
   if (path === "/" || path === "/dashboard") return DEFAULT_NAVIGATION;
   if (PRODUCT_CREATE_ROUTE_PAGES[path]) {
-    return normalizeNavigationState({ activePage: PRODUCT_CREATE_ROUTE_PAGES[path] });
+    return normalizeNavigationState({
+      activePage: PRODUCT_CREATE_ROUTE_PAGES[path],
+    });
   }
   if (path === "/orders/create") {
     return normalizeNavigationState({ activePage: "create_order" });
   }
   if (path === "/orders") {
-    return normalizeNavigationState({ activePage: "orders", activeOrderStatus: "all" });
+    return normalizeNavigationState({
+      activePage: "orders",
+      activeOrderStatus: "all",
+    });
   }
   if (path.startsWith("/orders/")) {
     const status = segmentToKey(path.replace(/^\/orders\//, "")) || "all";
-    return normalizeNavigationState({ activePage: "orders", activeOrderStatus: status });
+    return normalizeNavigationState({
+      activePage: "orders",
+      activeOrderStatus: status,
+    });
   }
 
   const [, baseSegment, ...rest] = path.split("/");
@@ -483,7 +491,8 @@ function getNavigationStateFromPath(pathname) {
 
 function getPathFromNavigationState(state = {}) {
   const nav = normalizeNavigationState(state);
-  if (PRODUCT_CREATE_ROUTES[nav.activePage]) return PRODUCT_CREATE_ROUTES[nav.activePage];
+  if (PRODUCT_CREATE_ROUTES[nav.activePage])
+    return PRODUCT_CREATE_ROUTES[nav.activePage];
   if (nav.activePage === "dashboard") return "/";
   if (nav.activePage === "create_order") return "/orders/create";
   if (nav.activePage === "orders") {
@@ -496,7 +505,8 @@ function getPathFromNavigationState(state = {}) {
     (item) => item.activePage === nav.activePage,
   );
   if (!group) return "/";
-  const segment = group.routes[nav[group.stateKey]] ?? group.routes[group.defaultKey] ?? "";
+  const segment =
+    group.routes[nav[group.stateKey]] ?? group.routes[group.defaultKey] ?? "";
   return segment ? `${group.basePath}/${segment}` : group.basePath;
 }
 
@@ -604,8 +614,22 @@ function getStoredNavigationState() {
   }
 }
 
+// The product edit page keeps its product id in the URL (/products/edit/:id) so a
+// reload reopens the same product instead of falling back to Product Manage.
+function getEditProductIdFromPath(pathname = window.location.pathname) {
+  const match = /^\/products\/edit\/(\d+)$/.exec(normalizeRoutePath(pathname));
+  return match ? Number(match[1]) : null;
+}
+
 function getInitialNavigationState() {
   if (getDirectLandingPageId()) return DEFAULT_NAVIGATION;
+  if (getEditProductIdFromPath()) {
+    return {
+      ...DEFAULT_NAVIGATION,
+      activePage: "edit_product",
+      activeProductPage: "product_manage",
+    };
+  }
   return (
     getNavigationStateFromPath(window.location.pathname) ||
     getHashNavigationState() ||
@@ -614,7 +638,7 @@ function getInitialNavigationState() {
   );
 }
 
-function writeNavigationState(state) {
+function writeNavigationState(state, { editProductId } = {}) {
   if (typeof window === "undefined" || getDirectLandingPageId()) return;
   const normalized = normalizeNavigationState(state);
   try {
@@ -623,7 +647,10 @@ function writeNavigationState(state) {
     // Ignore storage failures.
   }
 
-  const nextPath = getPathFromNavigationState(normalized);
+  const nextPath =
+    state.activePage === "edit_product" && editProductId
+      ? `/products/edit/${editProductId}`
+      : getPathFromNavigationState(normalized);
   const currentPath = normalizeRoutePath(window.location.pathname);
   if (nextPath && currentPath !== nextPath) {
     window.history.pushState({ navigation: normalized }, "", nextPath);
@@ -893,24 +920,28 @@ function App() {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    writeNavigationState({
-      activePage,
-      activeOrderStatus,
-      activeProductPage,
-      activeSupplierPage,
-      activePurchasePage,
-      activeLandingPage,
-      activeAdminPage,
-      activeCustomersPage,
-      activeWebsitePage,
-      activeApiPage,
-      activeMarketingPage,
-      activeBlogsPage,
-      activeBannerPage,
-      activeExpensePage,
-      activeReportsPage,
-    });
+    writeNavigationState(
+      {
+        activePage,
+        activeOrderStatus,
+        activeProductPage,
+        activeSupplierPage,
+        activePurchasePage,
+        activeLandingPage,
+        activeAdminPage,
+        activeCustomersPage,
+        activeWebsitePage,
+        activeApiPage,
+        activeMarketingPage,
+        activeBlogsPage,
+        activeBannerPage,
+        activeExpensePage,
+        activeReportsPage,
+      },
+      { editProductId: selectedProduct?.Id || getEditProductIdFromPath() },
+    );
   }, [
+    selectedProduct?.Id,
     activePage,
     activeOrderStatus,
     activeProductPage,
@@ -928,9 +959,46 @@ function App() {
     activeReportsPage,
   ]);
 
+  // Reopened edit page (reload / back button): load the product from its URL id.
+  useEffect(() => {
+    if (!isAuthenticated || activePage !== "edit_product" || selectedProduct)
+      return undefined;
+    const productId = getEditProductIdFromPath();
+    let active = true;
+    const backToList = () => {
+      setActivePage("products");
+      setActiveProductPage("product_manage");
+    };
+    if (!productId) {
+      backToList();
+      return undefined;
+    }
+    productService
+      .getById(productId)
+      .then((res) => {
+        if (!active) return;
+        if (res?.data) setSelectedProduct(res.data);
+        else backToList();
+      })
+      .catch(() => {
+        if (active) backToList();
+      });
+    return () => {
+      active = false;
+    };
+  }, [isAuthenticated, activePage, selectedProduct]);
+
   useEffect(() => {
     if (directLandingPageId) return undefined;
     const handlePopState = () => {
+      const editProductId = getEditProductIdFromPath();
+      if (editProductId) {
+        setSelectedProduct((current) =>
+          current?.Id === editProductId ? current : null,
+        );
+        setActivePage("edit_product");
+        return;
+      }
       const next =
         getNavigationStateFromPath(window.location.pathname) ||
         getHashNavigationState() ||
@@ -1594,9 +1662,15 @@ function App() {
         <ProductCreatePage onNavigate={() => goProducts("product_manage")} />
       );
     }
+    if (activePage === "edit_product" && !selectedProduct) {
+      return (
+        <div className="flex-1 p-6 text-sm text-gray-500">Loading product…</div>
+      );
+    }
     if (activePage === "edit_product" && selectedProduct) {
       return (
         <ProductEditPage
+          key={selectedProduct.Id}
           product={selectedProduct}
           onNavigate={() => {
             goProducts("product_manage");

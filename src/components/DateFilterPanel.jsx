@@ -20,8 +20,8 @@ export default function DateFilterPanel({ onFilterChange, filteredData, loading 
   const statuses = filteredData?.ordersByStatus || [];
 
   const filterStats = [
-    { label: 'Total Visitors', value: fmt(summary.totalVisitors), gradient: 'linear-gradient(135deg, #262626, #4D4D4D)' },
-    { label: 'Total Customers', value: fmt(summary.totalCustomers), gradient: 'linear-gradient(135deg, #A66B00, #F2A900)' },
+    { label: 'Total Visitors', value: fmt(summary.totalVisitors), gradient: 'linear-gradient(135deg, #1F1F1E, #3A3A37)' },
+    { label: 'Total Customers', value: fmt(summary.totalCustomers), gradient: 'linear-gradient(135deg, #D69A00, #FFC107)', dark: true },
   ];
 
   const orderStats = statuses.filter((o) => FILTER_STATUS.includes(o.status));
@@ -56,7 +56,7 @@ export default function DateFilterPanel({ onFilterChange, filteredData, loading 
 
           <div className="grid grid-cols-2 gap-2">
             {filterStats.map((s, i) => (
-              <div key={i} className={`rounded-lg p-3 text-white ${loading ? 'animate-pulse' : ''}`} style={{ background: s.gradient }}>
+              <div key={i} className={`rounded-lg p-3 ${s.dark ? 'text-gray-900' : 'text-white'} ${loading ? 'animate-pulse' : ''}`} style={{ background: s.gradient }}>
                 <div className="text-lg font-bold">{loading ? '—' : s.value}</div>
                 <div className="text-xs opacity-90">{s.label}</div>
               </div>

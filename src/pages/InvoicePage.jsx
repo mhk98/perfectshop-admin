@@ -85,7 +85,7 @@ function getItems(order, meta) {
       const total = Number(item.total || item.lineTotal || unitPrice * qty);
       return {
         id: item.id || item.productId || index,
-        name: item.name || item.productName || "Product",
+        name: `${item.name || item.productName || "Product"}${item.variant ? ` (${item.variant})` : ""}`,
         qty,
         unitPrice: unitPrice || Math.round(total / qty),
         total,
@@ -150,10 +150,12 @@ export default function InvoicePage({
     [order.customerArea, order.customerDistrict].filter(Boolean).join(", ");
   const sellerName =
     getSiteName(settings) || settings.companyName || "Perfect Shop";
-  const sellerPhone = settings.phone || settings.phoneNumber || "01355945078";
+  const sellerPhone =
+    settings.phone || settings.phoneNumber || "+880 1355-945078";
   const sellerEmail = settings.email || "perfectshopbd01@gmail.com";
   const sellerAddress =
-    settings.address || "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka";
+    settings.address ||
+    "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka, Bangladesh, 1214";
   const logo = getLogo(settings) || "/homzify-logo.jpeg";
   const invoiceNo = invoiceNumber(order);
   const orderDate = order.orderDate || order.createdAt || meta.orderDate;
@@ -189,7 +191,7 @@ export default function InvoicePage({
               <img
                 src={logo}
                 alt={sellerName}
-                className="h-40 w-40 rounded-full object-cover"
+                className="h-32 w-auto max-w-[200px] object-contain"
                 onError={(event) => {
                   event.currentTarget.style.display = "none";
                 }}

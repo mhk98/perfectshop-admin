@@ -345,7 +345,11 @@ export default function OrdersPage({
     const current = order.fraudGuard?.status || order.fraudStatus || "";
     const nextStatus = current === "fake" ? "safe" : "fake";
     const label = nextStatus === "fake" ? "Fake Order" : "Safe";
-    if (!window.confirm(`${formatInvoiceNumber(order, order.Id)} কে ${label} mark করবেন?`))
+    if (
+      !window.confirm(
+        `${formatInvoiceNumber(order, order.Id)} কে ${label} mark করবেন?`,
+      )
+    )
       return;
     try {
       await orderService.updateOrder(order.Id, {
@@ -417,7 +421,9 @@ export default function OrdersPage({
 
   async function handleSendToPathao(order) {
     if (
-      !window.confirm(`${formatInvoiceNumber(order, order.Id)} Pathao courier এ পাঠাবেন?`)
+      !window.confirm(
+        `${formatInvoiceNumber(order, order.Id)} Pathao courier এ পাঠাবেন?`,
+      )
     )
       return;
     setCourierBusyId(order.Id);
@@ -1740,10 +1746,12 @@ function OrderInvoicePage({ order, settings }) {
   );
   const sellerName =
     getSiteName(settings) || settings.companyName || "Perfect Shop";
-  const sellerPhone = settings.phone || settings.phoneNumber || "01355945078";
+  const sellerPhone =
+    settings.phone || settings.phoneNumber || "+880 1355-945078";
   const sellerEmail = settings.email || "perfectshopbd01@gmail.com";
   const sellerAddress =
-    settings.address || "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka";
+    settings.address ||
+    "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka, Bangladesh, 1214";
   const logo = getLogo(settings) || "/homzify-logo.jpeg";
   const customerAddress =
     order.customerAddress ||
@@ -1964,7 +1972,7 @@ function getInvoiceItems(order, meta) {
       const total = Number(item.total || item.lineTotal || unitPrice * qty);
       return {
         id: item.id || item.productId || index,
-        name: item.name || item.productName || "Product",
+        name: `${item.name || item.productName || "Product"}${item.variant ? ` (${item.variant})` : ""}`,
         qty,
         unitPrice: unitPrice || Math.round(total / qty),
         total,
