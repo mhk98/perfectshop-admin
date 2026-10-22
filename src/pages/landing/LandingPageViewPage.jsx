@@ -215,40 +215,12 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
   const [selectedProducts, setSelectedProducts] = useState(() =>
     initializeSelectedProducts(productOptions),
   );
-<<<<<<< HEAD
   const allFreeShipping =
     selectedProducts.length > 0 && selectedProducts.every((item) => item.freeShipping);
   const shippingOptions = useMemo(
     () => getShippingOptions(campaign, allFreeShipping),
     [campaign, allFreeShipping],
   );
-=======
-  const [freeShippingIds, setFreeShippingIds] = useState(() => new Set());
-  useEffect(() => {
-    let active = true;
-    const ids = [
-      ...new Set(productOptions.map((item) => Number(item.productId)).filter(Boolean)),
-    ];
-    Promise.all(
-      ids.map((id) =>
-        apiRequest(`/product/storefront/${id}`)
-          .then((res) => (res?.data?.freeShipping ? id : null))
-          .catch(() => null),
-      ),
-    ).then((results) => {
-      if (active) setFreeShippingIds(new Set(results.filter(Boolean)));
-    });
-    return () => {
-      active = false;
-    };
-  }, [productOptions]);
-  const allItemsFreeShipping =
-    selectedProducts.length > 0 &&
-    selectedProducts.every((item) => freeShippingIds.has(Number(item.productId)));
-  const shippingOptions = allItemsFreeShipping
-    ? SHIPPING_OPTIONS.map((option) => ({ ...option, charge: 0 }))
-    : SHIPPING_OPTIONS;
->>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
   const deliveryCharge =
     shippingOptions.find((option) => option.id === form.shipping)?.charge || 0;
   const productSubtotal = selectedProducts.reduce(
@@ -611,10 +583,6 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
     reviewImages,
     deliveryCharge,
     shippingOptions,
-<<<<<<< HEAD
-=======
-    allItemsFreeShipping,
->>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
     productOptions,
     selectedProducts,
     productSubtotal,
@@ -638,14 +606,8 @@ export default function LandingPageViewPage({ campaign, trackingEnabled = true }
         productName={productName}
         productImage={bannerImage}
         price={price}
-<<<<<<< HEAD
         deliveryCharge={placedOrder.deliveryCharge ?? deliveryCharge}
         total={placedOrder.total ?? total}
-=======
-        items={selectedProducts}
-        deliveryCharge={deliveryCharge}
-        total={total}
->>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
         phoneNumber={phone}
         onContinue={() => setPlacedOrder(null)}
         onTrack={() => {
@@ -1262,10 +1224,6 @@ function RegularLandingTemplate({ data, campaign }) {
     bannerImage,
     deliveryCharge,
     shippingOptions,
-<<<<<<< HEAD
-=======
-    allItemsFreeShipping,
->>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
     productOptions,
     selectedProducts,
     productSubtotal,
@@ -1504,12 +1462,7 @@ function RegularLandingTemplate({ data, campaign }) {
                     className="flex w-full items-center gap-3 border-b border-slate-200 px-4 py-3 text-left text-sm last:border-b-0"
                   >
                     <span className={`h-5 w-5 rounded-full border ${form.shipping === option.id ? "border-green-600 bg-green-600" : "border-slate-300"}`} />
-<<<<<<< HEAD
                     {`${option.banglaLabel} ${option.free ? "ফ্রি ডেলিভারি" : `${option.charge} টাকা`}`}
-=======
-                    {option.label === "Inside Dhaka" ? "ঢাকার ভিতরে" : option.label === "Outside Dhaka" ? "ঢাকার বাইরে" : option.label}{" "}
-                    {allItemsFreeShipping ? "ফ্রি ডেলিভারি" : option.label === "Inside Dhaka" ? "৮০ টাকা" : option.label === "Outside Dhaka" ? "১৩০ টাকা" : `${option.charge} টাকা`}
->>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
                   </button>
                 ))}
               </div>

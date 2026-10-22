@@ -151,11 +151,7 @@ export default function InvoicePage({
   const sellerName =
     getSiteName(settings) || settings.companyName || "Perfect Shop";
   const sellerPhone =
-<<<<<<< HEAD
     settings.phone || settings.phoneNumber || "+880 1355-945078";
-=======
-    settings.phone || settings.phoneNumber || "880 1355-945078";
->>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
   const sellerEmail = settings.email || "perfectshopbd01@gmail.com";
   const sellerAddress =
     settings.address ||

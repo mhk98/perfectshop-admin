@@ -164,11 +164,7 @@ export default function CreateOrderPage({ onNavigate }) {
         orderDate: new Date().toISOString().slice(0, 10),
       };
 
-<<<<<<< HEAD
       await orderService.createStaffOrder(payload);
-=======
-      await orderService.createOrder(payload);
->>>>>>> e4e6a26886c2b1dccee797f1a0fcc2d93316c974
       checkout.complete();
       alert("Order সফলভাবে তৈরি হয়েছে!");
       clearCart();
