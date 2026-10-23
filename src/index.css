@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #F7F7F5;
+  background: #F5F5F5;
 }
 
 #root {
@@ -27,7 +27,7 @@ body {
   background: #111111;
 }
 ::-webkit-scrollbar-thumb {
-  background: #FFC107;
+  background: #737373;
   border-radius: 2px;
 }
 
@@ -41,10 +41,3 @@ body {
 [contenteditable] li { margin: 0.2rem 0; }
 [contenteditable] strong { font-weight: 700; }
 [contenteditable] em { font-style: italic; }
-
-/* Brand yellow surfaces need dark text for contrast (logo: black on yellow) */
-:is(.bg-indigo-400, .bg-indigo-500, .bg-indigo-600, .bg-indigo-700,
-    .bg-teal-400, .bg-teal-500, .bg-teal-600, .bg-teal-700,
-    .bg-\[\#FFC107\], .bg-\[\#F0B000\]).text-white {
-  color: #111111;
-}

@@ -154,8 +154,7 @@ export default function InvoicePage({
     settings.phone || settings.phoneNumber || "+880 1355-945078";
   const sellerEmail = settings.email || "perfectshopbd01@gmail.com";
   const sellerAddress =
-    settings.address ||
-    "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka, Bangladesh, 1214";
+    settings.address || "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka, Bangladesh, 1214";
   const logo = getLogo(settings) || "/homzify-logo.jpeg";
   const invoiceNo = invoiceNumber(order);
   const orderDate = order.orderDate || order.createdAt || meta.orderDate;
@@ -169,14 +168,14 @@ export default function InvoicePage({
       <div className="no-print mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-800 transition hover:text-indigo-800"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 transition hover:text-indigo-800"
         >
           <ArrowLeft size={15} />
           Back To Order
         </button>
         <button
           onClick={() => window.print()}
-          className="inline-flex h-8 w-8 items-center justify-center rounded bg-teal-500 text-gray-900 transition hover:bg-teal-600"
+          className="inline-flex h-8 w-8 items-center justify-center rounded bg-teal-500 text-white transition hover:bg-teal-600"
           title="Print Invoice"
         >
           <Printer size={15} />
@@ -321,7 +320,7 @@ export default function InvoicePage({
           </table>
 
           <footer className="mt-8 border-t border-gray-200 pt-8 text-center">
-            <p className="font-bold italic text-indigo-800">
+            <p className="font-bold italic text-indigo-600">
               Terms & Conditions
             </p>
             <p className="mt-3 italic text-gray-500">

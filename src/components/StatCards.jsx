@@ -8,27 +8,25 @@ export default function StatCards({ summary = {}, loading }) {
       label: 'Sales Amount',
       value: loading ? '—' : `৳ ${fmt(summary.totalSales)}`,
       icon: Clock,
-      gradient: 'linear-gradient(135deg, #111111, #2B2B29)',
+      gradient: 'linear-gradient(135deg, #111111, #3F3F3F)',
     },
     {
       label: 'Total Order',
       value: loading ? '—' : fmt(summary.totalOrders),
       icon: ShoppingCart,
-      gradient: 'linear-gradient(135deg, #F0B000, #FFD54F)',
-      dark: true,
+      gradient: 'linear-gradient(135deg, #1F1F1F, #737373)',
     },
     {
       label: 'Total Visitors',
       value: loading ? '—' : fmt(summary.totalVisitors),
       icon: Users,
-      gradient: 'linear-gradient(135deg, #1F1F1E, #3A3A37)',
+      gradient: 'linear-gradient(135deg, #262626, #525252)',
     },
     {
       label: 'Total Customers',
       value: loading ? '—' : fmt(summary.totalCustomers),
       icon: UserCheck,
-      gradient: 'linear-gradient(135deg, #D69A00, #FFC107)',
-      dark: true,
+      gradient: 'linear-gradient(135deg, #171717, #404040)',
     },
   ];
 
@@ -37,7 +35,7 @@ export default function StatCards({ summary = {}, loading }) {
       {stats.map((s, i) => (
         <div
           key={i}
-          className={`rounded-xl p-4 ${s.dark ? 'text-gray-900' : 'text-white'} flex items-center justify-between shadow`}
+          className="rounded-xl p-4 text-white flex items-center justify-between shadow"
           style={{ background: s.gradient }}
         >
           <div>

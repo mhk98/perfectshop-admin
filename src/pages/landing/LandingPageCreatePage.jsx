@@ -500,8 +500,8 @@ export default function LandingPageCreatePage({ mode = 'create', campaign, onNav
           ctaText: form.ctaText,
           orderTitle: form.orderTitle,
           sizeTitle: form.sizeTitle,
-          deliveryInside: String(Math.max(Number(form.deliveryInside) || 0, 80)),
-          deliveryOutside: String(Math.max(Number(form.deliveryOutside) || 0, 130)),
+          deliveryInside: form.deliveryInside,
+          deliveryOutside: form.deliveryOutside,
         },
         status: form.status,
       };
@@ -1120,7 +1120,7 @@ function TemplateThumbnail({ template, content }) {
 
   if (template === 'Giveaway Campaign') {
     return (
-      <div className="h-36 bg-[#fffdf8] p-3">
+      <div className="h-36 bg-[#ffffff] p-3">
         <div className="mx-auto h-4 w-4 rounded-full bg-amber-500" />
         <div className="mt-2 space-y-1">
           <div className="rounded bg-yellow-100 px-2 py-1 text-center text-[9px] font-black text-red-600">
@@ -1202,7 +1202,7 @@ function TemplateThumbnail({ template, content }) {
   }
 
   return (
-    <div className="h-36 bg-[#fbfaf6] p-3">
+    <div className="h-36 bg-[#fafafa] p-3">
       <div className="mx-auto h-5 w-5 rounded-full bg-amber-500" />
       <div className="mt-2 rounded bg-yellow-100 p-2">
         <p className="line-clamp-1 text-center text-[10px] font-black text-red-600">{content.title}</p>

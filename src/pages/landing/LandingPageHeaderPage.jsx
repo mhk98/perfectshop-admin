@@ -17,9 +17,9 @@ const DEFAULT_HEADER = {
   ],
   logoUrl: '',
   logoAlt: 'Website logo',
-  backgroundColor: '#1d1d1b',
+  backgroundColor: '#071233',
   textColor: '#ffffff',
-  accentColor: '#fbbf24',
+  accentColor: '#C59B27',
   status: true,
 };
 
@@ -165,7 +165,7 @@ export default function LandingPageHeaderPage() {
           </button>
         </section>
 
-        <button type="submit" disabled={saving} className="rounded-lg bg-teal-500 px-7 py-2.5 text-sm font-semibold text-gray-900 hover:bg-teal-600 disabled:opacity-50">
+        <button type="submit" disabled={saving} className="rounded-lg bg-teal-500 px-7 py-2.5 text-sm font-semibold text-white hover:bg-teal-600 disabled:opacity-50">
           {saving ? 'Saving...' : 'Save Header'}
         </button>
       </form>

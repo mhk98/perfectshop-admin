@@ -13,6 +13,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { getLogo, getSiteName } from "../utils/siteBranding";
 import { assetUrl } from "../utils/assetUrl";
+import { getPermissionSet, hasPermission } from "../utils/permissions";
 import {
   connectNotificationSocket,
   disconnectNotificationSocket,
@@ -62,6 +63,7 @@ export default function TopNav({
   onMenuClick,
 }) {
   const { user, logout } = useAuth();
+  const permissionSet = getPermissionSet(user);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -332,34 +334,43 @@ export default function TopNav({
 
         <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
           <NavBtn
-            color="bg-[#FFC107]"
+            color="bg-[#0B1B4F] hover:bg-[#071233]"
             label="Visit Site"
             onClick={() =>
               window.open(SITE_URL, "_blank", "noopener,noreferrer")
             }
           />
+          {/* Shortcuts show only when the role can open the page behind them. */}
+          {hasPermission(permissionSet, "landing_page") && (
+            <NavBtn
+              color="bg-[#C59B27] hover:bg-[#A87F18] font-bold"
+              label="Landing Page"
+              onClick={() => onQuickNavigate?.("landing")}
+            />
+          )}
+          {hasPermission(permissionSet, "marketing_tools") && (
+            <NavBtn
+              color="bg-[#0B1B4F] hover:bg-[#071233]"
+              label="Visitors"
+              onClick={() => onQuickNavigate?.("visitors")}
+            />
+          )}
+          {hasPermission(permissionSet, "orders") && (
+            <NavBtn
+              color="bg-[#0B1B4F] hover:bg-[#071233]"
+              label="POS"
+              onClick={() => onQuickNavigate?.("pos")}
+            />
+          )}
+          {hasPermission(permissionSet, "expense") && (
+            <NavBtn
+              color="bg-[#0B1B4F] hover:bg-[#071233]"
+              label="Expense"
+              onClick={() => onQuickNavigate?.("expense")}
+            />
+          )}
           <NavBtn
-            color="bg-[#111111]"
-            label="Landing Page"
-            onClick={() => onQuickNavigate?.("landing")}
-          />
-          <NavBtn
-            color="bg-[#F0B000]"
-            label="Visitors"
-            onClick={() => onQuickNavigate?.("visitors")}
-          />
-          <NavBtn
-            color="bg-[#2B2B29]"
-            label="POS"
-            onClick={() => onQuickNavigate?.("pos")}
-          />
-          <NavBtn
-            color="bg-[#FFC107]"
-            label="Expense"
-            onClick={() => onQuickNavigate?.("expense")}
-          />
-          <NavBtn
-            color="bg-[#2B2B29]"
+            color="bg-[#0B1B4F] hover:bg-[#071233]"
             label="Full Tutorial"
             onClick={() =>
               TUTORIAL_URL
@@ -523,7 +534,7 @@ export default function TopNav({
             onClick={() => setDropdownOpen((v) => !v)}
             className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-gray-100 transition"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#111111] via-[#FFC107] to-[#FFD54F] flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#111111] via-[#404040] to-[#737373] flex items-center justify-center shrink-0">
               {user?.image ? (
                 <img
                   src={assetUrl(user.image)}
@@ -591,7 +602,7 @@ function NavBtn({ color, label, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`${color} ${color.includes("#FFC107") || color.includes("#E09A00") ? "text-gray-900" : "text-white"} text-xs font-medium px-3 py-1.5 rounded-full hover:opacity-90 transition`}
+      className={`${color} text-white text-xs font-medium px-3 py-1.5 rounded-full hover:opacity-90 transition`}
     >
       {label}
     </button>

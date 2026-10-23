@@ -43,7 +43,7 @@ export function SectionHeader({ title }) {
   return (
     <div
       className="px-4 py-3 text-white font-semibold text-sm"
-      style={{ background: 'linear-gradient(90deg, #111111, #2B2B29)' }}
+      style={{ background: 'linear-gradient(90deg, #111111, #3F3F3F)' }}
     >
       {title}
     </div>

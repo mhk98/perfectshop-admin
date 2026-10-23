@@ -50,6 +50,7 @@ import CustomerEditPage from "./pages/customers/CustomerEditPage";
 import CustomerViewPage from "./pages/customers/CustomerViewPage";
 import CustomerLoginAsPage from "./pages/customers/CustomerLoginAsPage";
 import CustomerIpBlockPage from "./pages/customers/CustomerIpBlockPage";
+import ScratchCardPage from "./pages/scratchCard/ScratchCardPage";
 import LandingPageCreatePage from "./pages/landing/LandingPageCreatePage";
 import LandingPageRegularPage from "./pages/landing/LandingPageRegularPage";
 import LandingPageManagePage from "./pages/landing/LandingPageManagePage";
@@ -165,6 +166,8 @@ const PERSISTABLE_PAGES = new Set([
   "landing",
   "admin",
   "customers",
+  "scratch_card",
+  "scratch_card_repeat",
   "website",
   "api",
   "marketing",
@@ -465,6 +468,12 @@ function getNavigationStateFromPath(pathname) {
   if (path === "/orders/create") {
     return normalizeNavigationState({ activePage: "create_order" });
   }
+  if (path === "/scratch-cards") {
+    return normalizeNavigationState({ activePage: "scratch_card" });
+  }
+  if (path === "/scratch-cards/repeat") {
+    return normalizeNavigationState({ activePage: "scratch_card_repeat" });
+  }
   if (path === "/orders") {
     return normalizeNavigationState({
       activePage: "orders",
@@ -495,6 +504,8 @@ function getPathFromNavigationState(state = {}) {
     return PRODUCT_CREATE_ROUTES[nav.activePage];
   if (nav.activePage === "dashboard") return "/";
   if (nav.activePage === "create_order") return "/orders/create";
+  if (nav.activePage === "scratch_card") return "/scratch-cards";
+  if (nav.activePage === "scratch_card_repeat") return "/scratch-cards/repeat";
   if (nav.activePage === "orders") {
     return nav.activeOrderStatus && nav.activeOrderStatus !== "all"
       ? `/orders/${keyToSegment(nav.activeOrderStatus)}`
@@ -1638,6 +1649,8 @@ function App() {
       );
     }
     if (activePage === "dashboard") return <Dashboard />;
+    if (activePage === "scratch_card") return <ScratchCardPage key="first" claimType="first" />;
+    if (activePage === "scratch_card_repeat") return <ScratchCardPage key="repeat" claimType="repeat" />;
     if (activePage === "orders")
       return (
         <OrdersPage

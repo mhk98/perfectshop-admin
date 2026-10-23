@@ -2,35 +2,35 @@ import { useEffect, useState } from 'react';
 import { Image, Plus, Trash2 } from 'lucide-react';
 import { landingPageService } from '../../services/landingPageService';
 
-const DEFAULT_FOOTER = {
-  logoUrl: '',
-  companyName: 'কাফেলা',
-  supportLabel: 'Customer Supports:',
-  supportPhone: '+8809647-222999',
-  description: 'Corporate and promotional gift item supplier in Bangladesh',
-  address: '500/3 Khilgaon Niribili Society, Dhaka Bangladesh',
-  quickLinksTitle: 'Quick Links',
-  quickLinks: [
-    { label: 'Customer Support', url: '/contact-us' },
-    { label: 'All Products', url: '/products' },
-    { label: 'Categories', url: '/categories' },
-    { label: 'Track My Order', url: '/track-order' },
-  ],
-  socialLinksTitle: 'Follow Us',
-  socialLinks: [
-    { platform: 'facebook', label: 'facebook', url: '' },
-    { platform: 'youtube', label: 'youtube', url: '' },
-    { platform: 'tiktok', label: 'tiktok', url: '' },
-    { platform: 'instagram', label: 'instagram', url: '' },
-  ],
-  importantLinksTitle: 'Important Links',
-  importantLinks: [{ label: 'Refund Policy', url: '/refund-policy' }],
-  paymentMethodsImageUrl: '',
-  copyrightText: 'কাফেলা © 2026.',
-  developerText: 'Develop by SOFT-HEXIS',
-  developerUrl: '',
-  status: true,
-};
+// const DEFAULT_FOOTER = {
+//   logoUrl: '',
+//   companyName: 'Perfect Shop',
+//   supportLabel: 'Customer Supports:',
+//   supportPhone: '+8809647-222999',
+//   description: 'Corporate and promotional gift item supplier in Bangladesh',
+//   address: '34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka, Bangladesh, 1214',
+//   quickLinksTitle: 'Quick Links',
+//   quickLinks: [
+//     { label: 'Customer Support', url: '/contact-us' },
+//     { label: 'All Products', url: '/products' },
+//     { label: 'Categories', url: '/categories' },
+//     { label: 'Track My Order', url: '/track-order' },
+//   ],
+//   socialLinksTitle: 'Follow Us',
+//   socialLinks: [
+//     { platform: 'facebook', label: 'facebook', url: '' },
+//     { platform: 'youtube', label: 'youtube', url: '' },
+//     { platform: 'tiktok', label: 'tiktok', url: '' },
+//     { platform: 'instagram', label: 'instagram', url: '' },
+//   ],
+//   importantLinksTitle: 'Important Links',
+//   importantLinks: [{ label: 'Refund Policy', url: '/refund-policy' }],
+//   paymentMethodsImageUrl: '',
+//   copyrightText: 'কাফেলা © 2026.',
+//   developerText: 'Develop by SOFT-HEXIS',
+//   developerUrl: '',
+//   status: true,
+// };
 
 function readImage(file, onLoad) {
   if (!file) return;
@@ -219,7 +219,7 @@ export default function LandingPageFooterPage() {
           </div>
         </section>
 
-        <button type="submit" disabled={saving} className="rounded-lg bg-teal-500 px-7 py-2.5 text-sm font-semibold text-gray-900 hover:bg-teal-600 disabled:opacity-50">
+        <button type="submit" disabled={saving} className="rounded-lg bg-teal-500 px-7 py-2.5 text-sm font-semibold text-white hover:bg-teal-600 disabled:opacity-50">
           {saving ? 'Saving...' : 'Save Footer'}
         </button>
       </form>

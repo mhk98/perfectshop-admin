@@ -25,12 +25,12 @@ export default function StockAlert({ onViewAll }) {
     <div className="bg-white rounded-xl shadow overflow-hidden">
       <div
         className="flex items-center justify-between px-4 py-3"
-        style={{ background: "linear-gradient(90deg, #1d4ed8, #3b82f6)" }}
+        style={{ background: "linear-gradient(90deg, #111111, #3F3F3F)" }}
       >
         <span className="text-white font-semibold text-sm">Products</span>
         <button
           onClick={onViewAll}
-          className="bg-teal-400 hover:bg-teal-500 text-gray-900 text-xs font-medium px-3 py-1 rounded-full transition"
+          className="bg-teal-400 hover:bg-teal-500 text-white text-xs font-medium px-3 py-1 rounded-full transition"
         >
           View All
         </button>

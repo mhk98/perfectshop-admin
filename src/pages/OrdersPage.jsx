@@ -808,7 +808,7 @@ export default function OrdersPage({
         <div className="bg-white rounded-xl shadow overflow-hidden">
           <div
             className="px-4 py-3 border-b border-gray-100 flex items-center justify-between"
-            style={{ background: "linear-gradient(90deg, #1d4ed8, #3b82f6)" }}
+            style={{ background: "linear-gradient(90deg, #111111, #3F3F3F)" }}
           >
             <span className="text-white font-semibold text-sm">
               {statusMaps.labels[currentStatus] || "All Order"} (
@@ -1034,7 +1034,7 @@ export default function OrdersPage({
             <button
               type="button"
               onClick={handlePrintSelectedBarcodes}
-              className="inline-flex items-center gap-1.5 rounded-full bg-teal-600 px-4 py-2 text-xs font-semibold text-gray-900 transition hover:bg-teal-700"
+              className="inline-flex items-center gap-1.5 rounded-full bg-teal-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-teal-700"
             >
               <Printer size={14} />
               Print Barcode
@@ -1075,7 +1075,7 @@ export default function OrdersPage({
                   type="button"
                   onClick={handleAssignSelectedOrders}
                   disabled={assignBusy}
-                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-teal-600 px-4 text-xs font-semibold text-gray-900 transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-teal-600 px-4 text-xs font-semibold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {assignBusy && <Loader2 size={13} className="animate-spin" />}
                   Transfer Selected
@@ -1750,8 +1750,7 @@ function OrderInvoicePage({ order, settings }) {
     settings.phone || settings.phoneNumber || "+880 1355-945078";
   const sellerEmail = settings.email || "perfectshopbd01@gmail.com";
   const sellerAddress =
-    settings.address ||
-    "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka, Bangladesh, 1214";
+    settings.address || "34/4/A-3, Shanti Kunjo, Press er Goli, North Bashabo, Sabujbag, Dhaka, Bangladesh, 1214";
   const logo = getLogo(settings) || "/homzify-logo.jpeg";
   const customerAddress =
     order.customerAddress ||
@@ -2741,7 +2740,7 @@ function FraudCheckModal({ order, data, loading, error, onRefresh, onClose }) {
               type="button"
               onClick={onRefresh}
               disabled={loading}
-              className="flex h-7 items-center gap-1 rounded bg-indigo-50 px-2 text-[11px] font-semibold text-indigo-800 transition hover:bg-indigo-100 disabled:opacity-60"
+              className="flex h-7 items-center gap-1 rounded bg-indigo-50 px-2 text-[11px] font-semibold text-indigo-600 transition hover:bg-indigo-100 disabled:opacity-60"
             >
               <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
               Refresh
@@ -2783,7 +2782,7 @@ function FraudCheckModal({ order, data, loading, error, onRefresh, onClose }) {
               <div className="overflow-x-auto rounded border border-gray-200">
                 <table className="w-full min-w-[760px] text-xs">
                   <thead>
-                    <tr className="bg-indigo-600 text-gray-900">
+                    <tr className="bg-indigo-600 text-white">
                       <th className="px-3 py-3 text-left font-semibold">
                         Courier
                       </th>
@@ -3137,7 +3136,7 @@ function OrderRow({
           </span>
         )}
         {order.status === "in_courier" && (
-          <div className="text-[10px] text-indigo-800 mt-0.5">In Transit</div>
+          <div className="text-[10px] text-indigo-500 mt-0.5">In Transit</div>
         )}
       </td>
 
@@ -3158,12 +3157,12 @@ function OrderRow({
           <button
             type="button"
             onClick={onShowNotes}
-            className="relative inline-flex h-7 w-7 items-center justify-center rounded bg-indigo-100 text-indigo-800 transition hover:bg-indigo-200"
+            className="relative inline-flex h-7 w-7 items-center justify-center rounded bg-indigo-100 text-indigo-600 transition hover:bg-indigo-200"
             title="Show notes"
           >
             <List size={13} />
             {noteCount > 0 && (
-              <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-indigo-600 px-1 text-[9px] font-bold leading-4 text-gray-900">
+              <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-indigo-600 px-1 text-[9px] font-bold leading-4 text-white">
                 {noteCount}
               </span>
             )}
@@ -3314,7 +3313,7 @@ function OrderRow({
               }
               color={
                 steadfastInfo.trackingCode || steadfastInfo.consignmentId
-                  ? "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                  ? "bg-indigo-100 text-indigo-600 hover:bg-indigo-200"
                   : "bg-emerald-100 text-emerald-600 hover:bg-emerald-200"
               }
               title={
